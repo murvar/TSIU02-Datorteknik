@@ -13,15 +13,15 @@ start:
 	;out		SPH, r16
 	.def	time = r16 ; Length of tone
 	Out		DDRB,r16
-	ldi		r16,16
+	ldi		r16,$ff
 	push	r16
 	call	BEEP
 	pop		r16
-	call	DELAY
+	call	WAIT
 	push	r16
 	call	NOBEEP
 	pop		r16
-	call	DELAY
+	call	WAIT
 	jmp		start
 
 
@@ -37,16 +37,37 @@ MESSAGE:
 	.db "DATORTTEKNIK", $00
 
 DELAY:
-	ldi		r24,65535
+	adiw	r28,63
 D_3:
-	ldi		r23,65535
+	adiw	r26,$3f
 D_2:
-	ldi		r22,65535
+	adiw	r24,$3f
 D_1:
-	dec		r24
+	dec		r28
 	brne	D_1
-	dec		r23
+	dec		r26
 	brne	D_2
-	dec		r22
+	dec		r24
 	brne	D_3
 	ret
+
+WAIT:
+    push r29
+    ldi r29, $ff
+
+WAIT2:
+    push r30
+    push r31
+    ldi r30, $00
+    ldi r31, $E0
+
+WAIT3:
+    adiw r30, 1
+    brne WAIT3
+    ; ~0.1 sekunder
+    pop r31
+    pop r30
+    dec r29
+    brne WAIT2
+    pop r29
+    ret
