@@ -11,40 +11,41 @@ start:
 	out		SPL, r20
 	ldi		r20, high(RAMEND)
 	out		SPH, r20
-
-	.equ	time=20 ; Length of tone
-
+	.equ	time=30 ; Length of tone
 	ldi		ZL,LOW(MESSAGE*2)
 	ldi		ZH,HIGH(MESSAGE*2)
-	ldi		r20,0B00010000
-	Out		DDRB,r20
+	ldi		r20,0B00010000 ; Set bit 4 on r20
+	Out		DDRB,r20 ; Activate pin 4
 	call	MORSE
 
 MORSE:
 	call	GET_CHAR
-	cpi		r16,$00 ; char = 0? Done
+	cpi		r16,$20 ; Space sign
+	breq	SPACE
+	cpi		r16,$00 ; Char = 0? Exit
 	breq	EXIT
 	push	r16
 	push	ZL
 	push	ZH
-	call	LOOKUP
-	call	SEND
+	call	LOOKUP ; Translate from ASCII to morse
+	call	SEND ; Char to beep
 	pop		ZH
 	pop		ZL
 	pop		r16
-	adiw	ZL,1
-	ldi		r17,(2*time)
+NEXT:
+	adiw	ZL,1 ; Move Z one step
+	ldi		r17,(2*time) ; WAIT argument
 	call	WAIT
 	jmp		MORSE
 GET_CHAR:
-	lpm		r16,Z
+	lpm		r16,Z	; Get next char
 	ret
 SEND:
-	cpi		r16,0
+	cpi		r16,0	; Check if char done
 	breq	RETURN
-	call	GET_BIT
+	call	GET_BIT ; Get next bit of char
 	call	BEEP
-	brcs	LONG
+	brcs	LONG	; Long if carry = 1
 SHORT://Kort beep
 	ldi		r17,time
 	jmp		CONTINUE
@@ -56,21 +57,25 @@ CONTINUE:
 	ldi		r17,time
 	call	WAIT
 	jmp		SEND
+RETURN:
+	ret
 
 GET_BIT:
-	rol		r16 ; r16x2
+	rol		r16 ; r16x2, left shift
 	ret
 
-	//pusha Z-pekaren
+SPACE:
+	ldi		r17,7*time
+	call	NOBEEP
+	call	WAIT
+	jmp		NEXT
+
 LOOKUP:
-	ldi		ZL,LOW(BTAB<<1)
+	ldi		ZL,LOW(BTAB<<1) ; Read table
 	ldi		ZH,HIGH(BTAB<<1)
-	subi	r16,$41 
-	add		ZL,r16
-	lpm		r16,Z
-	ret
-
-RETURN:
+	subi	r16,$41 ; ASCII to table index
+	add		ZL,r16 ; Z points to correct char in table
+	lpm		r16,Z ; Read char
 	ret
 
 EXIT:
@@ -97,5 +102,5 @@ WAIT:
 
 EXIT2:
 
-MESSAGE:.db		"DATORTTEKNIK", $00
+MESSAGE:.db		"VINAH VINAH VINAH", $00
 BTAB:.db		$60, $88, $A8, $90, $40, $28, $D0, $08, $20, $78, $B0, $48, $E0, $A0, $F0, $68, $D8, $50, $10, $C0, $30, $18, $70, $98, $B8, $C8
