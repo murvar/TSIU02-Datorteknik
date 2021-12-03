@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm Thu Dec 02 15:40:10 2021
+AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm Fri Dec 03 14:39:31 2021
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
@@ -993,123 +993,121 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.as
                                  
                                  
                                  start:
-000000 ef4f                      	ldi		r20, low(RAMEND)
-000001 bf4d                      	out		SPL, r20
-000002 e048                      	ldi		r20, high(RAMEND)
-000003 bf4e                      	out		SPH, r20
-                                 	.equ	time=30 ; Length of tone
-000004 eae8                      	ldi		ZL,LOW(MESSAGE*2)
-000005 e0f0                      	ldi		ZH,HIGH(MESSAGE*2)
-000006 e140                      	ldi		r20,0B00010000 ; Set bit 4 on r20
-000007 b944                      	Out		DDRB,r20 ; Activate pin 4
-000008 940e 000a                 	call	MORSE
+000000 ef4f                          ldi        r20, low(RAMEND)
+000001 bf4d                          out        SPL, r20
+000002 e048                          ldi        r20, high(RAMEND)
+000003 bf4e                          out        SPH, r20
+                                     .equ	   time=30 ; Length of tone
+000004 eae2                          ldi        ZL,LOW(MESSAGE*2)
+000005 e0f0                          ldi        ZH,HIGH(MESSAGE*2)
+000006 e140                          ldi        r20,0B00010000 ; Set bit 4 on r20
+000007 b944                          Out        DDRB,r20 ; Activate pin 4
+000008 940e 000a                     call       MORSE
                                  
                                  MORSE:
-00000a 940e 0020                 	call	GET_CHAR
-00000c 3200                      	cpi		r16,$20 ; Space sign
-00000d f159                      	breq	SPACE
-00000e 3000                      	cpi		r16,$00 ; Char = 0? Exit
-00000f f1b1                      	breq	EXIT
-000010 930f                      	push	r16
-000011 93ef                      	push	ZL
-000012 93ff                      	push	ZH
-000013 940e 0040                 	call	LOOKUP ; Translate from ASCII to morse
-000015 940e 0022                 	call	SEND ; Char to beep
-000017 91ff                      	pop		ZH
-000018 91ef                      	pop		ZL
-000019 910f                      	pop		r16
+00000a 940e 0020                     call	   GET_CHAR
+00000c 3200                          cpi        r16,$20 ; Space sign
+00000d f151                          breq       SPACE
+00000e 3000                          cpi        r16,$00 ; Char = 0? Exit
+00000f f199                          breq       EXIT
+000010 930f                          push       r16
+000011 93ef                          push    ZL
+000012 93ff                          push    ZH
+000013 940e 003d                     call    LOOKUP ; Translate from ASCII to morse
+000015 940e 0022                     call    SEND ; Char to beep
+000017 91ff                          pop        ZH
+000018 91ef                          pop        ZL
+000019 910f                          pop        r16
                                  NEXT:
-00001a 9631                      	adiw	ZL,1 ; Move Z one step
-00001b e31c                      	ldi		r17,(2*time) ; WAIT argument
-00001c 940e 004f                 	call	WAIT
-00001e 940c 000a                 	jmp		MORSE
+00001a 9631                          adiw    ZL,1 ; Move Z one step
+00001b e51a                          ldi     r17,(3*time) ; WAIT argument
+00001c 940e 004c                     call    WAIT
+00001e 940c 000a                     jmp     MORSE
                                  GET_CHAR:
-000020 9104                      	lpm		r16,Z	; Get next char
-000021 9508                      	ret
+000020 9104                          lpm     r16,Z    ; Get next char
+000021 9508                          ret
                                  SEND:
-000022 3000                      	cpi		r16,0	; Check if char done
-000023 f091                      	breq	RETURN
-000024 940e 0037                 	call	GET_BIT ; Get next bit of char
-000026 940e 0048                 	call	BEEP
-000028 f018                      	brcs	LONG	; Long if carry = 1
-                                 SHORT://Kort beep
-000029 e11e                      	ldi		r17,time
-00002a 940c 002d                 	jmp		CONTINUE
-                                 LONG://Långt beep
-00002c e51a                      	ldi		r17,(3*time)
+000022 940e 0036                 	call	GET_BIT
+000024 f081                      	breq    RETURN
+000025 f018                          brcs    LONG    ; Long if carry = 1
+                                 SHORT:
+000026 e11e                          ldi     r17,time
+000027 940c 002a                     jmp     CONTINUE
+                                 LONG:
+000029 e51a                          ldi     r17,(3*time)
                                  CONTINUE:
-00002d 940e 004f                 	call	WAIT
-00002f 940e 004a                 	call	NOBEEP
-000031 e11e                      	ldi		r17,time
-000032 940e 004f                 	call	WAIT
-000034 940c 0022                 	jmp		SEND
+00002a 940e 0045                 	call    BEEP
+00002c 940e 004c                     call    WAIT
+00002e 940e 0047                     call    NOBEEP
+000030 e11e                          ldi     r17,time
+000031 940e 004c                     call    WAIT
+000033 940c 0022                     jmp     SEND
                                  RETURN:
-000036 9508                      	ret
+000035 9508                          ret
                                  
                                  GET_BIT:
-000037 1f00                      	rol		r16 ; r16x2, left shift
-000038 9508                      	ret
+000036 0f00                          lsl     r16 ; r16x2, left shift
+000037 9508                      	ret
                                  
                                  SPACE:
-000039 ed12                      	ldi		r17,7*time
-00003a 940e 004a                 	call	NOBEEP
-00003c 940e 004f                 	call	WAIT
-00003e 940c 001a                 	jmp		NEXT
+000038 e718                          ldi        r17,4*time
+000039 940e 004c                     call	   WAIT
+00003b 940c 001a                     jmp        NEXT
                                  
                                  LOOKUP:
-000040 ebea                      	ldi		ZL,LOW(BTAB<<1) ; Read table
-000041 e0f0                      	ldi		ZH,HIGH(BTAB<<1)
-000042 5401                      	subi	r16,$41 ; ASCII to table index
-000043 0fe0                      	add		ZL,r16 ; Z points to correct char in table
-000044 9104                      	lpm		r16,Z ; Read char
-000045 9508                      	ret
+00003d ebe4                          ldi        ZL,LOW(BTAB<<1) ; Read table
+00003e e0f0                          ldi        ZH,HIGH(BTAB<<1)
+00003f 5401                          subi	   r16,$41 ; ASCII to table index
+000040 0fe0                          add        ZL,r16 ; Z points to correct char in table
+000041 9104                          lpm        r16,Z ; Read char
+000042 9508                          ret
                                  
                                  EXIT:
-000046 940c 0054                 	jmp		EXIT2
+000043 940c 0051                     jmp        EXIT2
                                  
                                  BEEP:
-000048 9a2c                      	sbi		PORTB,4
-000049 9508                      	ret
+000045 9a2c                          sbi        PORTB,4
+000046 9508                          ret
                                  
                                  NOBEEP:
-00004a 982c                      	cbi		PORTB,4
-00004b 9508                      	ret
+000047 982c                          cbi        PORTB,4
+000048 9508                          ret
                                  
                                  WAIT_LONG:
-00004c 9601                      	adiw	r24,1
-00004d f7f1                      	brne	WAIT_LONG
-00004e 9508                      	ret
+000049 9601                          adiw    r24,1
+00004a f7f1                          brne    WAIT_LONG
+00004b 9508                          ret
                                  
                                  WAIT:
-00004f 940e 004c                 	call	WAIT_LONG
-000051 951a                      	dec		r17
-000052 f7e1                      	brne	WAIT
-000053 9508                      	ret
+                                 
+00004c 940e 0049                     call    WAIT_LONG
+00004e 951a                          dec        r17
+00004f f7e1                          brne    WAIT
+000050 9508                          ret
                                  
                                  EXIT2:
                                  
+000051 4956
+000052 414e
+000053 2048
 000054 4956
 000055 414e
 000056 2048
 000057 4956
 000058 414e
-000059 2048
-00005a 4956
-00005b 414e
-00005c 0048                      MESSAGE:.db		"VINAH VINAH VINAH", $00
-00005d 8860
-00005e 90a8
-00005f 2840
-000060 08d0
-000061 7820
-000062 48b0
-000063 a0e0
-000064 68f0
-000065 50d8
-000066 c010
-000067 1830
-000068 9870
-000069 c8b8                      BTAB:.db		$60, $88, $A8, $90, $40, $28, $D0, $08, $20, $78, $B0, $48, $E0, $A0, $F0, $68, $D8, $50, $10, $C0, $30, $18, $70, $98, $B8, $C8
+000059 0048                      MESSAGE:.db     "VINAH VINAH VINAH", $00
+00005a 8860
+00005b 90a8
+00005c 2840
+00005d 08d0
+00005e 7820
+00005f 48b0
+000060 a0e0
+000061 68f0
+000062 50d8
+000063 c010
+000064 1830
+000065 9870
 
 
 RESOURCE USE INFORMATION
@@ -1129,7 +1127,7 @@ counted separately from r26..r31 here.
 "ATmega328P" register use summary:
 x  :   0 y  :   0 z  :   2 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  10 r17:   6 r18:   0 r19:   0 r20:   6 
+r13:   0 r14:   0 r15:   0 r16:   9 r17:   6 r18:   0 r19:   0 r20:   6 
 r21:   0 r22:   0 r23:   0 r24:   1 r25:   0 r26:   0 r27:   0 r28:   0 
 r29:   0 r30:   6 r31:   4 
 Registers used: 7 out of 35 (20.0%)
@@ -1140,15 +1138,15 @@ andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0
 brcc  :   0 brcs  :   1 break :   0 breq  :   3 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
 brne  :   2 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 call  :  13 cbi   :   1 cbr   :   0 
+brvs  :   0 bset  :   0 bst   :   0 call  :  12 cbi   :   1 cbr   :   0 
 clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
-cpi   :   3 cpse  :   0 dec   :   1 eor   :   0 fmul  :   0 fmuls :   0 
+cpi   :   2 cpse  :   0 dec   :   1 eor   :   0 fmul  :   0 fmuls :   0 
 fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   0 jmp   :   5 
-ld    :   0 ldd   :   0 ldi   :  12 lds   :   0 lpm   :   4 lsl   :   0 
+ld    :   0 ldd   :   0 ldi   :  12 lds   :   0 lpm   :   4 lsl   :   1 
 lsr   :   0 mov   :   0 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
 neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :   3 pop   :   3 
-push  :   3 rcall :   0 ret   :   8 reti  :   0 rjmp  :   0 rol   :   1 
+push  :   3 rcall :   0 ret   :   8 reti  :   0 rjmp  :   0 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   1 sbic  :   0 sbis  :   0 
 sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   0 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
@@ -1159,7 +1157,7 @@ Instructions used: 19 out of 113 (16.8%)
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0000d4    168     44    212   32768   0.6%
+[.cseg] 0x000000 0x0000ce    162     44    206   32768   0.6%
 [.dseg] 0x000100 0x000100      0      0      0    2048   0.0%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 

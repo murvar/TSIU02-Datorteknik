@@ -23,24 +23,24 @@
  </OUTPUT_FILES>
  <LABELS>
   <start><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>9</LINE></start>
-  <MESSAGE><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>105</LINE></MESSAGE>
+  <MESSAGE><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>104</LINE></MESSAGE>
   <MORSE><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>21</LINE></MORSE>
   <GET_CHAR><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>40</LINE></GET_CHAR>
-  <SPACE><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>67</LINE></SPACE>
-  <EXIT><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>81</LINE></EXIT>
-  <LOOKUP><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>73</LINE></LOOKUP>
+  <SPACE><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>66</LINE></SPACE>
+  <EXIT><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>79</LINE></EXIT>
+  <LOOKUP><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>71</LINE></LOOKUP>
   <SEND><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>43</LINE></SEND>
   <NEXT><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>35</LINE></NEXT>
-  <WAIT><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>97</LINE></WAIT>
-  <RETURN><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>60</LINE></RETURN>
-  <GET_BIT><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>63</LINE></GET_BIT>
-  <BEEP><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>84</LINE></BEEP>
-  <LONG><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>52</LINE></LONG>
-  <SHORT><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>49</LINE></SHORT>
-  <CONTINUE><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>54</LINE></CONTINUE>
-  <NOBEEP><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>88</LINE></NOBEEP>
-  <BTAB><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>106</LINE></BTAB>
-  <EXIT2><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>103</LINE></EXIT2>
-  <WAIT_LONG><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>92</LINE></WAIT_LONG>
+  <WAIT><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>95</LINE></WAIT>
+  <GET_BIT><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>62</LINE></GET_BIT>
+  <RETURN><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>59</LINE></RETURN>
+  <LONG><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>50</LINE></LONG>
+  <SHORT><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>47</LINE></SHORT>
+  <CONTINUE><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>52</LINE></CONTINUE>
+  <BEEP><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>82</LINE></BEEP>
+  <NOBEEP><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>86</LINE></NOBEEP>
+  <BTAB><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>105</LINE></BTAB>
+  <EXIT2><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>102</LINE></EXIT2>
+  <WAIT_LONG><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>90</LINE></WAIT_LONG>
  </LABELS>
 </ASSEMBLER_INFO>
