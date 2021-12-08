@@ -1,0 +1,38 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.8</VERSION>
+ <DEVICE>"ATmega328P"</DEVICE>
+ <WORKING_DIR>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\Debug\AssemblerApplication1.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>AssemblerApplication1.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>AssemblerApplication1.map</FILE>
+  <FILE>AssemblerApplication1.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <start><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>16</LINE></start>
+  <LCD_PORT_INIT><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>26</LINE></LCD_PORT_INIT>
+  <LCD_INIT><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>32</LINE></LCD_INIT>
+  <BLINK><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>87</LINE></BLINK>
+  <WAIT><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>97</LINE></WAIT>
+  <BACKLIGHT_ON><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>102</LINE></BACKLIGHT_ON>
+  <LCD_WRITE4><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>64</LINE></LCD_WRITE4>
+  <LCD_COMMAND><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>82</LINE></LCD_COMMAND>
+  <LCD_WRITE8><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>71</LINE></LCD_WRITE8>
+  <LCD_ASCII><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>77</LINE></LCD_ASCII>
+  <AGAIN><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>90</LINE></AGAIN>
+  <BACKLIGHT_OFF><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>107</LINE></BACKLIGHT_OFF>
+ </LABELS>
+</ASSEMBLER_INFO>
