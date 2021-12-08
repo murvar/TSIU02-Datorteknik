@@ -14,10 +14,6 @@
 
 ; Replace with your application code
 start:
-	ldi     r20, low(RAMEND)
-    out     SPL, r20
-    ldi     r20, high(RAMEND)
-    out     SPH, r20
 	call	LCD_PORT_INIT
 	call	LCD_INIT
 	call	BLINK
@@ -54,8 +50,7 @@ LCD_INIT :
 	ldi		r16 , DISP_ON
 	call	LCD_COMMAND
 ; --- Clear display
-	ldi		r16 , LCD_CLR
-	call	LCD_COMMAND
+	call LCD_ERASE
 ; --- Entry mode : Increment cursor , no shift
 	ldi		r16 , E_MODE
 	call	LCD_COMMAND
@@ -83,6 +78,23 @@ LCD_COMMAND:
 	cbi PORTB, RS
 	call LCD_WRITE8
 	ret
+
+LCD_HOME: // flytta pekare till $0
+	ldi		r16 , $02
+	call	LCD_COMMAND
+
+LCD_ERASE:
+	ldi		r16 , LCD_CLR
+	call	LCD_COMMAND
+
+LCD_PRINT:
+
+LINE_PRINT:
+	ldi		ZH,HIGH(LINE)	; start of string
+	ldi		ZL,LOW(LINE)
+	call	LCD_PRINT		; print it
+	ret
+	
 
 BLINK:
 	jmp BLINK
