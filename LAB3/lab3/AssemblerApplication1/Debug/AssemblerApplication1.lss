@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm Wed Dec 08 14:12:14 2021
+AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm Wed Dec 08 20:35:33 2021
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
@@ -998,66 +998,69 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
                                  .equ	E = 1
                                  .equ	RS = 0
                                  
+                                 .dseg
+000100                           TIME:	.byte	6 ; reserverar sex bytes i sram
+                                 .cseg
+                                 
                                  ; Replace with your application code
                                  start:
-000000 ef4f                      	ldi     r20, low(RAMEND)
-000001 bf4d                          out     SPL, r20
-000002 e048                          ldi     r20, high(RAMEND)
-000003 bf4e                          out     SPH, r20
-000004 940e 000b                 	call	LCD_PORT_INIT
-000006 940e 000f                 	call	LCD_INIT
-000008 940e 0040                 	call	BLINK
-00000a cff5                          rjmp	start
+000000 940e 0009                 	call	LCD_PORT_INIT
+000002 940e 000d                 	call	LCD_INIT
+000004 940e 0051                 	call	LINE_PRINT
+000006 940e 0056                 	call	BLINK
+000008 cff7                          rjmp	start
                                  
                                  LCD_PORT_INIT:
-00000b ef0f                          ldi r16, 0b11111111
-00000c b904                          out DDRB, r16
-00000d b90a                          out DDRD, r16
-00000e 9508                          ret
+000009 ef0f                          ldi r16, 0b11111111
+00000a b904                          out DDRB, r16
+00000b b90a                          out DDRD, r16
+00000c 9508                          ret
                                  
                                  LCD_INIT :
                                  ; --- turn backlight on
-00000f 940e 004c                 	call WAIT
-000011 940e 004f                 	call BACKLIGHT_ON
+00000d 940e 0062                 	call WAIT
+00000f 940e 0065                 	call BACKLIGHT_ON
                                  ; --- wait for LCD ready
-000013 940e 004c                 	call WAIT
+000011 940e 0062                 	call WAIT
                                  ;
                                  ; --- First initiate 4- bit mode
                                  ;
-000015 e300                      	ldi		r16 , $30
-000016 940e 002c                 	call	LCD_WRITE4
-000018 940e 002c                 	call	LCD_WRITE4
-00001a 940e 002c                 	call	LCD_WRITE4
-00001c e200                      	ldi		r16 , $20
-00001d 940e 002c                 	call	LCD_WRITE4
+000013 e300                      	ldi		r16 , $30
+000014 940e 0029                 	call	LCD_WRITE4
+000016 940e 0029                 	call	LCD_WRITE4
+000018 940e 0029                 	call	LCD_WRITE4
+00001a e200                      	ldi		r16 , $20
+00001b 940e 0029                 	call	LCD_WRITE4
                                  ;
                                  ; --- Now configure display
                                  ;
                                  ; --- Function set : 4 - bit mode , 2 line , 5 x8 font
-00001f e208                      	ldi		r16 , FN_SET
-000020 940e 003c                 	call	LCD_COMMAND
+00001d e208                      	ldi		r16 , FN_SET
+00001e 940e 003c                 	call	LCD_COMMAND
                                  ; --- Display on , cursor on , cursor blink
-000022 e00f                      	ldi		r16 , DISP_ON
-000023 940e 003c                 	call	LCD_COMMAND
+000020 e00f                      	ldi		r16 , DISP_ON
+000021 940e 003c                 	call	LCD_COMMAND
                                  ; --- Clear display
-000025 e001                      	ldi		r16 , LCD_CLR
-000026 940e 003c                 	call	LCD_COMMAND
+000023 940e 0044                 	call LCD_ERASE
                                  ; --- Entry mode : Increment cursor , no shift
-000028 e006                      	ldi		r16 , E_MODE
-000029 940e 003c                 	call	LCD_COMMAND
-00002b 9508                      	ret
+000025 e006                      	ldi		r16 , E_MODE
+000026 940e 003c                 	call	LCD_COMMAND
+000028 9508                      	ret
                                  
                                  LCD_WRITE4:
-00002c 9a29                      	sbi PORTB, E
-00002d b90b                      	out PORTD, r16
+000029 9a29                      	sbi PORTB, E
+00002a b90b                      	out PORTD, r16
+00002b 0000                      	NOP
+00002c 0000                      	NOP
+00002d 0000                      	NOP
 00002e 9829                      	cbi PORTB, E
-00002f 940e 004c                 	call WAIT
+00002f 940e 0062                 	call WAIT
 000031 9508                      	ret
                                  
                                  LCD_WRITE8:
-000032 940e 002c                 	call LCD_WRITE4
+000032 940e 0029                 	call LCD_WRITE4
 000034 9502                      	swap r16
-000035 940e 002c                 	call LCD_WRITE4
+000035 940e 0029                 	call LCD_WRITE4
 000037 9508                      	ret
                                  
                                  LCD_ASCII:
@@ -1070,29 +1073,64 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
 00003d 940e 0032                 	call LCD_WRITE8
 00003f 9508                      	ret
                                  
+                                 LCD_HOME: // flytta pekare till $0
+000040 e002                      	ldi		r16 , $02
+000041 940e 003c                 	call	LCD_COMMAND
+000043 9508                      	ret
+                                 
+                                 LCD_ERASE:
+000044 e001                      	ldi		r16 , LCD_CLR
+000045 940e 003c                 	call	LCD_COMMAND
+000047 9508                      	ret
+                                 
+                                 LCD_PRINT:
+000048 9104                      	lpm     r16,Z    ; Get next char ld
+000049 3000                      	cpi		r16,$00 ; Char = 0? Exit
+00004a f029                      	breq	END
+00004b 9631                      	adiw    ZL,1 ; Move Z one step
+00004c 940e 0038                 	call	LCD_ASCII
+00004e 940c 0048                 	jmp		LCD_PRINT
+                                 END:
+000050 9508                      	ret
+                                 
+                                 
+                                 LINE_PRINT:
+000051 e0f0                      	ldi		ZH,HIGH(LINE*2)	; start of string
+000052 ede4                      	ldi		ZL,LOW(LINE*2)
+000053 940e 0048                 	call	LCD_PRINT		; print it
+000055 9508                      	ret
+                                 
+                                 ;TIME_TICK:
+                                 ;	adiw	r17, 1
+                                 ;	brne	r17, 10
+                                 ;	jmp		END
+                                 ;	adiw	r17, 7
+                                 	
+                                 
                                  BLINK:
-000040 940c 0040                 	jmp BLINK
+000056 940c 0056                 	jmp BLINK
                                  
                                  AGAIN:
-000042 940e 004f                 	call	BACKLIGHT_ON
-000044 940e 004c                 	call	WAIT
-000046 940e 0052                 	call	BACKLIGHT_OFF
-000048 940e 004c                 	call	WAIT
-00004a 940c 0042                 	jmp		AGAIN
+000058 940e 0065                 	call	BACKLIGHT_ON
+00005a 940e 0062                 	call	WAIT
+00005c 940e 0068                 	call	BACKLIGHT_OFF
+00005e 940e 0062                 	call	WAIT
+000060 940c 0058                 	jmp		AGAIN
                                  
                                  WAIT:
-00004c 9601                          adiw    r24, 1
-00004d f7f1                          brne    WAIT
-00004e 9508                          ret
+000062 9601                          adiw    r24, 1
+000063 f7f1                          brne    WAIT
+000064 9508                          ret
                                  
                                  BACKLIGHT_ON:
-00004f 9a2a                      	sbi PORTB, 2
-000050 9a22                      	sbi DDRB, 2
-000051 9508                      	ret
+000065 9a2a                      	sbi PORTB, 2
+000066 9a22                      	sbi DDRB, 2
+000067 9508                      	ret
                                  
                                  BACKLIGHT_OFF:
-000052 982a                      	cbi PORTB, 2
-000053 9508                      	ret
+000068 982a                      	cbi PORTB, 2
+000069 9508                      	ret
+                                 
 
 
 RESOURCE USE INFORMATION
@@ -1110,40 +1148,40 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATmega328P" register use summary:
-x  :   0 y  :   0 z  :   0 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
+x  :   0 y  :   0 z  :   1 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  11 r17:   0 r18:   0 r19:   0 r20:   4 
+r13:   0 r14:   0 r15:   0 r16:  14 r17:   0 r18:   0 r19:   0 r20:   0 
 r21:   0 r22:   0 r23:   0 r24:   1 r25:   0 r26:   0 r27:   0 r28:   0 
-r29:   0 r30:   0 r31:   0 
-Registers used: 3 out of 35 (8.6%)
+r29:   0 r30:   2 r31:   1 
+Registers used: 5 out of 35 (14.3%)
 
 "ATmega328P" instruction use summary:
-.lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   1 and   :   0 
+.lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   2 and   :   0 
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
-brcc  :   0 brcs  :   0 break :   0 breq  :   0 brge  :   0 brhc  :   0 
+brcc  :   0 brcs  :   0 break :   0 breq  :   1 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
 brne  :   1 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 call  :  23 cbi   :   3 cbr   :   0 
+brvs  :   0 bset  :   0 bst   :   0 call  :  28 cbi   :   3 cbr   :   0 
 clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
-cpi   :   0 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   0 jmp   :   2 
-ld    :   0 ldd   :   0 ldi   :   9 lds   :   0 lpm   :   0 lsl   :   0 
+cpi   :   1 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   0 jmp   :   3 
+ld    :   0 ldd   :   0 ldi   :  10 lds   :   0 lpm   :   2 lsl   :   0 
 lsr   :   0 mov   :   0 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :   5 pop   :   0 
-push  :   0 rcall :   0 ret   :   9 reti  :   0 rjmp  :   1 rol   :   0 
+neg   :   0 nop   :   3 or    :   0 ori   :   0 out   :   3 pop   :   0 
+push  :   0 rcall :   0 ret   :  13 reti  :   0 rjmp  :   1 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   4 sbic  :   0 sbis  :   0 
 sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   0 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :   0 
 sub   :   0 subi  :   0 swap  :   1 tst   :   0 wdr   :   0 
-Instructions used: 11 out of 113 (9.7%)
+Instructions used: 15 out of 113 (13.3%)
 
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0000a8    168      0    168   32768   0.5%
-[.dseg] 0x000100 0x000100      0      0      0    2048   0.0%
+[.cseg] 0x000000 0x0000d6    212      2    214   32768   0.7%
+[.dseg] 0x000100 0x000106      0      6      6    2048   0.3%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 
 Assembly complete, 0 errors, 0 warnings

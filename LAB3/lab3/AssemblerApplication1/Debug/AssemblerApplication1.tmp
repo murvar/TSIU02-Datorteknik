@@ -22,17 +22,24 @@
   <FILE>AssemblerApplication1.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <start><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>16</LINE></start>
-  <LCD_PORT_INIT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>26</LINE></LCD_PORT_INIT>
-  <LCD_INIT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>32</LINE></LCD_INIT>
-  <BLINK><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>87</LINE></BLINK>
-  <WAIT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>97</LINE></WAIT>
-  <BACKLIGHT_ON><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>102</LINE></BACKLIGHT_ON>
+  <TIME><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>16</LINE></TIME>
+  <start><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>20</LINE></start>
+  <LCD_PORT_INIT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>27</LINE></LCD_PORT_INIT>
+  <LCD_INIT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>33</LINE></LCD_INIT>
+  <LINE_PRINT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>111</LINE></LINE_PRINT>
+  <BLINK><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>124</LINE></BLINK>
+  <WAIT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>134</LINE></WAIT>
+  <BACKLIGHT_ON><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>139</LINE></BACKLIGHT_ON>
   <LCD_WRITE4><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>64</LINE></LCD_WRITE4>
-  <LCD_COMMAND><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>82</LINE></LCD_COMMAND>
-  <LCD_WRITE8><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>71</LINE></LCD_WRITE8>
-  <LCD_ASCII><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>77</LINE></LCD_ASCII>
-  <AGAIN><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>90</LINE></AGAIN>
-  <BACKLIGHT_OFF><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>107</LINE></BACKLIGHT_OFF>
+  <LCD_COMMAND><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>85</LINE></LCD_COMMAND>
+  <LCD_ERASE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>95</LINE></LCD_ERASE>
+  <LCD_WRITE8><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>74</LINE></LCD_WRITE8>
+  <LCD_ASCII><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>80</LINE></LCD_ASCII>
+  <LCD_HOME><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>90</LINE></LCD_HOME>
+  <LCD_PRINT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>100</LINE></LCD_PRINT>
+  <END><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>107</LINE></END>
+  <LINE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>148</LINE></LINE>
+  <AGAIN><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>127</LINE></AGAIN>
+  <BACKLIGHT_OFF><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>144</LINE></BACKLIGHT_OFF>
  </LABELS>
 </ASSEMBLER_INFO>

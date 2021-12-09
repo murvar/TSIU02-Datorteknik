@@ -12,10 +12,15 @@
 .equ	E = 1
 .equ	RS = 0
 
+.dseg
+TIME:	.byte	6 ; reserverar sex bytes i sram
+.cseg
+
 ; Replace with your application code
 start:
 	call	LCD_PORT_INIT
 	call	LCD_INIT
+	call	LINE_PRINT
 	call	BLINK
     rjmp	start
 
@@ -59,6 +64,9 @@ LCD_INIT :
 LCD_WRITE4:
 	sbi PORTB, E
 	out PORTD, r16
+	NOP
+	NOP
+	NOP
 	cbi PORTB, E
 	call WAIT
 	ret
@@ -82,18 +90,35 @@ LCD_COMMAND:
 LCD_HOME: // flytta pekare till $0
 	ldi		r16 , $02
 	call	LCD_COMMAND
+	ret
 
 LCD_ERASE:
 	ldi		r16 , LCD_CLR
 	call	LCD_COMMAND
+	ret
 
 LCD_PRINT:
+	lpm     r16,Z    ; Get next char ld
+	cpi		r16,$00 ; Char = 0? Exit
+	breq	END
+	adiw    ZL,1 ; Move Z one step
+	call	LCD_ASCII
+	jmp		LCD_PRINT
+END:
+	ret
+
 
 LINE_PRINT:
-	ldi		ZH,HIGH(LINE)	; start of string
-	ldi		ZL,LOW(LINE)
+	ldi		ZH,HIGH(LINE*2)	; start of string
+	ldi		ZL,LOW(LINE*2)
 	call	LCD_PRINT		; print it
 	ret
+
+;TIME_TICK:
+;	adiw	r17, 1
+;	brne	r17, 10
+;	jmp		END
+;	adiw	r17, 7
 	
 
 BLINK:
@@ -119,3 +144,5 @@ BACKLIGHT_ON:
 BACKLIGHT_OFF:
 	cbi PORTB, 2
 	ret
+
+LINE:.db     "5", $00
