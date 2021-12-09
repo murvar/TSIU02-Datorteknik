@@ -21,7 +21,7 @@ start:
 	call	LCD_PORT_INIT
 	call	LCD_INIT
 	call	LINE_PRINT
-	call	BLINK
+	call	TIME_TEST
     rjmp	start
 
 LCD_PORT_INIT:
@@ -114,14 +114,78 @@ LINE_PRINT:
 	call	LCD_PRINT		; print it
 	ret
 
-;TIME_TICK:
-;	adiw	r17, 1
-;	brne	r17, 10
-;	jmp		END
-;	adiw	r17, 7
-	
+SAVE_TIME:
+	st x, r16
+	ret
+
+TIME_TEST:
+	call TIME_TICK
+	jmp TIME_TEST
+
+TIME_TICK:
+	ldi XH, HIGH(TIME)
+	ldi XL, LOW(TIME)
+	ld r16, X
+
+	;Ental Sekunder
+	inc r16
+	cpi r16, 10 ;Här ska vi istället ha ett variabelvärde för 6
+	brne SAVE_TIME
+	clr r16
+	st x+, r16
+
+	;Tiotal Sekunder
+	ld r16, x
+	inc r16
+	cpi r16, 6 ;Här ska vi istället ha ett variabelvärde för 6
+	brne SAVE_TIME
+	clr r16
+	st x+, r16
+
+	;Ental Minuter
+	ld r16, x
+	inc r16
+	cpi r16, 10 ;Här ska vi istället ha ett variabelvärde för 6
+	brne SAVE_TIME
+	clr r16
+	st x+, r16
+
+	;Tiotal Minuter
+	ld r16, x
+	inc r16
+	cpi r16, 6 ;Här ska vi istället ha ett variabelvärde för 6
+	brne SAVE_TIME
+	clr r16
+	st x+, r16
+
+	;Ental Timmar
+	ld r16, x
+	inc r16
+	cpi r17, 2
+	breq SPECIAL_SINGULAR_HOUR
+	brne NORMAL_SINGULAR_HOUR
+SPECIAL_SINGULAR_HOUR:
+	cpi r16, 4
+	brne SAVE_TIME
+	jmp CONTINUE_SINGULAR_HOUR
+NORMAL_SINGULAR_HOUR:
+	cpi r16, 10 
+	brne SAVE_TIME
+CONTINUE_SINGULAR_HOUR:
+	clr r16
+	st x+, r16
+
+	;Tiotal Timmar
+	inc r17
+	mov r16, r17
+	cpi r16, 3
+	brne SAVE_TIME
+	clr r17
+	st x+, r17
+	ret
 
 BLINK:
+	call TIME_TICK
 	jmp BLINK
 
 AGAIN:

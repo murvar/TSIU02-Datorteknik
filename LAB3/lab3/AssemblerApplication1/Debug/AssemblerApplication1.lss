@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm Wed Dec 08 20:35:33 2021
+AVRASM ver. 2.2.8  D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm Thu Dec 09 10:23:37 2021
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
@@ -1007,7 +1007,7 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
 000000 940e 0009                 	call	LCD_PORT_INIT
 000002 940e 000d                 	call	LCD_INIT
 000004 940e 0051                 	call	LINE_PRINT
-000006 940e 0056                 	call	BLINK
+000006 940e 0058                 	call	TIME_TEST
 000008 cff7                          rjmp	start
                                  
                                  LCD_PORT_INIT:
@@ -1018,10 +1018,10 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
                                  
                                  LCD_INIT :
                                  ; --- turn backlight on
-00000d 940e 0062                 	call WAIT
-00000f 940e 0065                 	call BACKLIGHT_ON
+00000d 940e 0098                 	call WAIT
+00000f 940e 009b                 	call BACKLIGHT_ON
                                  ; --- wait for LCD ready
-000011 940e 0062                 	call WAIT
+000011 940e 0098                 	call WAIT
                                  ;
                                  ; --- First initiate 4- bit mode
                                  ;
@@ -1054,7 +1054,7 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
 00002c 0000                      	NOP
 00002d 0000                      	NOP
 00002e 9829                      	cbi PORTB, E
-00002f 940e 0062                 	call WAIT
+00002f 940e 0098                 	call WAIT
 000031 9508                      	ret
                                  
                                  LCD_WRITE8:
@@ -1095,41 +1095,105 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
                                  
                                  
                                  LINE_PRINT:
-000051 e0f0                      	ldi		ZH,HIGH(LINE*2)	; start of string
-000052 ede4                      	ldi		ZL,LOW(LINE*2)
+000051 e0f1                      	ldi		ZH,HIGH(LINE*2)	; start of string
+000052 e4e0                      	ldi		ZL,LOW(LINE*2)
 000053 940e 0048                 	call	LCD_PRINT		; print it
 000055 9508                      	ret
                                  
-                                 ;TIME_TICK:
-                                 ;	adiw	r17, 1
-                                 ;	brne	r17, 10
-                                 ;	jmp		END
-                                 ;	adiw	r17, 7
-                                 	
+                                 SAVE_TIME:
+000056 930c                      	st x, r16
+000057 9508                      	ret
+                                 
+                                 TIME_TEST:
+000058 940e 005c                 	call TIME_TICK
+00005a 940c 0058                 	jmp TIME_TEST
+                                 
+                                 TIME_TICK:
+00005c e0b1                      	ldi XH, HIGH(TIME)
+00005d e0a0                      	ldi XL, LOW(TIME)
+00005e 910c                      	ld r16, X
+                                 
+                                 	;Ental Sekunder
+00005f 9503                      	inc r16
+000060 300a                      	cpi r16, 10 ;Här ska vi istället ha ett variabelvärde för 6
+000061 f7a1                      	brne SAVE_TIME
+000062 2700                      	clr r16
+000063 930d                      	st x+, r16
+                                 
+                                 	;Tiotal Sekunder
+000064 910c                      	ld r16, x
+000065 9503                      	inc r16
+000066 3006                      	cpi r16, 6 ;Här ska vi istället ha ett variabelvärde för 6
+000067 f771                      	brne SAVE_TIME
+000068 2700                      	clr r16
+000069 930d                      	st x+, r16
+                                 
+                                 	;Ental Minuter
+00006a 910c                      	ld r16, x
+00006b 9503                      	inc r16
+00006c 300a                      	cpi r16, 10 ;Här ska vi istället ha ett variabelvärde för 6
+00006d f741                      	brne SAVE_TIME
+00006e 2700                      	clr r16
+00006f 930d                      	st x+, r16
+                                 
+                                 	;Tiotal Minuter
+000070 910c                      	ld r16, x
+000071 9503                      	inc r16
+000072 3006                      	cpi r16, 6 ;Här ska vi istället ha ett variabelvärde för 6
+000073 f711                      	brne SAVE_TIME
+000074 2700                      	clr r16
+000075 930d                      	st x+, r16
+                                 
+                                 	;Ental Timmar
+000076 910c                      	ld r16, x
+000077 9503                      	inc r16
+000078 3012                      	cpi r17, 2
+000079 f009                      	breq SPECIAL_SINGULAR_HOUR
+00007a f421                      	brne NORMAL_SINGULAR_HOUR
+                                 SPECIAL_SINGULAR_HOUR:
+00007b 3004                      	cpi r16, 4
+00007c f6c9                      	brne SAVE_TIME
+00007d 940c 0081                 	jmp CONTINUE_SINGULAR_HOUR
+                                 NORMAL_SINGULAR_HOUR:
+00007f 300a                      	cpi r16, 10 
+000080 f6a9                      	brne SAVE_TIME
+                                 CONTINUE_SINGULAR_HOUR:
+000081 2700                      	clr r16
+000082 930d                      	st x+, r16
+                                 
+                                 	;Tiotal Timmar
+000083 9513                      	inc r17
+000084 2f01                      	mov r16, r17
+000085 3003                      	cpi r16, 3
+000086 f679                      	brne SAVE_TIME
+000087 2711                      	clr r17
+000088 931d                      	st x+, r17
+000089 9508                      	ret
                                  
                                  BLINK:
-000056 940c 0056                 	jmp BLINK
+00008a 940e 005c                 	call TIME_TICK
+00008c 940c 008a                 	jmp BLINK
                                  
                                  AGAIN:
-000058 940e 0065                 	call	BACKLIGHT_ON
-00005a 940e 0062                 	call	WAIT
-00005c 940e 0068                 	call	BACKLIGHT_OFF
-00005e 940e 0062                 	call	WAIT
-000060 940c 0058                 	jmp		AGAIN
+00008e 940e 009b                 	call	BACKLIGHT_ON
+000090 940e 0098                 	call	WAIT
+000092 940e 009e                 	call	BACKLIGHT_OFF
+000094 940e 0098                 	call	WAIT
+000096 940c 008e                 	jmp		AGAIN
                                  
                                  WAIT:
-000062 9601                          adiw    r24, 1
-000063 f7f1                          brne    WAIT
-000064 9508                          ret
+000098 9601                          adiw    r24, 1
+000099 f7f1                          brne    WAIT
+00009a 9508                          ret
                                  
                                  BACKLIGHT_ON:
-000065 9a2a                      	sbi PORTB, 2
-000066 9a22                      	sbi DDRB, 2
-000067 9508                      	ret
+00009b 9a2a                      	sbi PORTB, 2
+00009c 9a22                      	sbi DDRB, 2
+00009d 9508                      	ret
                                  
                                  BACKLIGHT_OFF:
-000068 982a                      	cbi PORTB, 2
-000069 9508                      	ret
+00009e 982a                      	cbi PORTB, 2
+00009f 9508                      	ret
                                  
 
 
@@ -1148,39 +1212,39 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATmega328P" register use summary:
-x  :   0 y  :   0 z  :   1 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
+x  :  12 y  :   0 z  :   1 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  14 r17:   0 r18:   0 r19:   0 r20:   0 
-r21:   0 r22:   0 r23:   0 r24:   1 r25:   0 r26:   0 r27:   0 r28:   0 
+r13:   0 r14:   0 r15:   0 r16:  43 r17:   5 r18:   0 r19:   0 r20:   0 
+r21:   0 r22:   0 r23:   0 r24:   1 r25:   0 r26:   1 r27:   1 r28:   0 
 r29:   0 r30:   2 r31:   1 
-Registers used: 5 out of 35 (14.3%)
+Registers used: 9 out of 35 (25.7%)
 
 "ATmega328P" instruction use summary:
 .lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   2 and   :   0 
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
-brcc  :   0 brcs  :   0 break :   0 breq  :   1 brge  :   0 brhc  :   0 
+brcc  :   0 brcs  :   0 break :   0 breq  :   2 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
-brne  :   1 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 call  :  28 cbi   :   3 cbr   :   0 
-clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0 
+brne  :   9 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
+brvs  :   0 bset  :   0 bst   :   0 call  :  30 cbi   :   3 cbr   :   0 
+clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   6 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
-cpi   :   1 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   0 jmp   :   3 
-ld    :   0 ldd   :   0 ldi   :  10 lds   :   0 lpm   :   2 lsl   :   0 
-lsr   :   0 mov   :   0 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
+cpi   :   9 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   6 jmp   :   5 
+ld    :   5 ldd   :   0 ldi   :  12 lds   :   0 lpm   :   2 lsl   :   0 
+lsr   :   0 mov   :   1 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
 neg   :   0 nop   :   3 or    :   0 ori   :   0 out   :   3 pop   :   0 
-push  :   0 rcall :   0 ret   :  13 reti  :   0 rjmp  :   1 rol   :   0 
+push  :   0 rcall :   0 ret   :  15 reti  :   0 rjmp  :   1 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   4 sbic  :   0 sbis  :   0 
 sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   0 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
-sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :   0 
+sez   :   0 sleep :   0 spm   :   0 st    :   7 std   :   0 sts   :   0 
 sub   :   0 subi  :   0 swap  :   1 tst   :   0 wdr   :   0 
-Instructions used: 15 out of 113 (13.3%)
+Instructions used: 20 out of 113 (17.7%)
 
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0000d6    212      2    214   32768   0.7%
+[.cseg] 0x000000 0x000142    320      2    322   32768   1.0%
 [.dseg] 0x000100 0x000106      0      6      6    2048   0.3%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 
