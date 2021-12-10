@@ -5,27 +5,35 @@
 ; Author : Robin o Vincent
 ;
 
-.equ    FN_SET = $28      ;  4-bit mode, 2-line display, 5 x 8 font
-.equ    DISP_ON = $0F    ;  display on, cursor on, blink
-.equ    LCD_CLR = $01    ;  replace all characters with ASCII 'space'
-.equ    E_MODE =  $06   ; set cursor position
-.equ	E = 1
-.equ	RS = 0
-sei
+	.equ    FN_SET = $28      ;  4-bit mode, 2-line display, 5 x 8 font
+	.equ    DISP_ON = $0F    ;  display on, cursor on, blink
+	.equ    LCD_CLR = $01    ;  replace all characters with ASCII 'space'
+	.equ    E_MODE =  $06   ; set cursor position
+	.equ	E = 1
+	.equ	RS = 0
 
-.dseg
-TIME:	.byte	6 ; reserverar sex bytes i sram
-LINE:	.byte	16 
-.cseg
-
-; Replace with your application code
-start:
-	call	LCD_PORT_INIT
-	call	LCD_INIT
+	jmp		MAIN
+	.org	OC1Aaddr
+TIMER1_INT:
+	call	TIME_TICK
 	call	TIME_FORMAT
 	call	LINE_PRINT
-	call	TIME_TEST
-    rjmp	start
+	reti
+
+	.dseg
+TIME:	.byte	6 ; reserverar sex bytes i sram
+LINE:	.byte	16 
+	.cseg
+
+; Replace with your application code
+MAIN:
+	call	LCD_PORT_INIT
+	call	LCD_INIT
+	call	TIME_INIT
+	call	TIMER1_INIT
+	sei
+IDLE:
+    jmp		IDLE
 
 LCD_PORT_INIT:
     ldi		r16, 0b11111111
@@ -64,24 +72,52 @@ LCD_INIT :
 	call	LCD_COMMAND
 	ret
 
+	.equ SECOND_TICKS = 62500 - 1 ; @ 16/256 MHz
+TIMER1_INIT :
+	ldi r16 ,(1 << WGM12 )|(1 << CS12 ) ; CTC , prescale 256
+	sts TCCR1B , r16
+	ldi r16 , HIGH ( SECOND_TICKS )
+	sts OCR1AH , r16
+	ldi r16 , LOW ( SECOND_TICKS )
+	sts OCR1AL , r16
+	ldi r16 ,(1 << OCIE1A ) ; allow to interrupt
+	sts TIMSK1 , r16
+	ret
+
+TIME_INIT:
+	ldi		r17, 0
+	ldi		r16, 5
+	sts		TIME+0,r16
+	ldi		r16, 4
+	sts		TIME+1,r16
+	ldi		r16, 9
+	sts		TIME+2,r16
+	ldi		r16, 5
+	sts		TIME+3,r16
+	ldi		r16, 3
+	sts		TIME+4,r16
+	ldi		r16, 2
+	sts		TIME+5,r16
+	ret
+
 LCD_WRITE4:
 	sbi		PORTB, E
 	out		PORTD, r16
 	NOP
 	NOP
 	NOP
-	cbi		PORTB, E
 	call	WAIT
+	cbi		PORTB, E
 	ret
 
 LCD_WRITE8:
 	call	LCD_WRITE4
 	swap	r16
 	call	LCD_WRITE4
-	swap	r16
 	ret
 
 LCD_ASCII:
+	NOP
 	sbi		PORTB, RS
 	call	LCD_WRITE8
 	ret
@@ -102,7 +138,7 @@ LCD_ERASE:
 	ret
 
 LCD_PRINT:
-	ld     r16,Z+    ; Get next char ld
+	ld		r16,Z+    ; Get next char ld
 	cpi		r16,$00 ; Char = 0? Exit
 	breq	END
 	call	LCD_ASCII
@@ -124,40 +160,39 @@ SAVE_TIME:
 
 TIME_TEST:
 	call	TIME_TICK
-	jmp		TIME_TEST
+	call	TIME_FORMAT
+	call	LINE_PRINT
+	;jmp		TIME_TEST
+	ret
 
 TIME_TICK:
 	ldi		XH, HIGH(TIME)
 	ldi		XL, LOW(TIME)
-	ld		r16, x
 
 	;Ental Sekunder
-	inc		r16
-	cpi		r16, 10 ;Här ska vi istället ha ett variabelvärde för 6
+	ldi		r17,10
+	call	INC_AND_COMPARE
 	brne	SAVE_TIME
 	clr		r16
 	st		x+, r16
 
 	;Tiotal Sekunder
-	ld		r16, x
-	inc		r16
-	cpi		r16, 6 ;Här ska vi istället ha ett variabelvärde för 6
+	ldi		r17,6
+	call	INC_AND_COMPARE
 	brne	SAVE_TIME
 	clr		r16
 	st		x+, r16
 
 	;Ental Minuter
-	ld		r16, x
-	inc		r16
-	cpi		r16, 10 ;Här ska vi istället ha ett variabelvärde för 6
+	ldi		r17,10
+	call	INC_AND_COMPARE
 	brne	SAVE_TIME
 	clr		r16
 	st		x+, r16
 
 	;Tiotal Minuter
-	ld		r16, x
-	inc		r16
-	cpi		r16, 6 ;Här ska vi istället ha ett variabelvärde för 6
+	ldi		r17,6
+	call	INC_AND_COMPARE
 	brne	SAVE_TIME
 	clr		r16
 	st		x+, r16
@@ -165,6 +200,7 @@ TIME_TICK:
 	;Ental Timmar
 	ld		r16, x
 	inc		r16
+	lds		r17, TIME+5
 	cpi		r17, 2
 	breq	SPECIAL_SINGULAR_HOUR
 	brne	NORMAL_SINGULAR_HOUR
@@ -180,60 +216,56 @@ CONTINUE_SINGULAR_HOUR:
 	st		x+, r16
 
 	;Tiotal Timmar
-	inc		r17
-	mov		r16, r17
-	cpi		r16, 3
+	ldi		r17,3
+	call	INC_AND_COMPARE
 	brne	SAVE_TIME
-	clr		r17
-	st		x+, r17
+	clr		r16
+	st		x+, r16
+	ret
+
+INC_AND_COMPARE:
+	ld		r16, x
+	inc		r16
+	cp		r16, r17 ;Här ska vi istället ha ett variabelvärde för 6
 	ret
 
 TIME_FORMAT:
 	ldi		XH, HIGH(TIME)
 	ldi		XL, LOW(TIME)
-	ldi		r22, $30 
-	ld		r16, X
-	add		r22, r16
-	adiw	x, 13
-	st		x, r22 ; sätter ental sekund i LINE
-	sbiw	x, 12
-	ldi		r22, $30 
-	ld		r16, X
-	add		r22, r16
-	adiw	x, 11
-	st		x, r22 ; sätter tiotal sekund i LINE
-	sbiw	x, 1
+
+	ldi		r22, $00
+	sts		LINE+8, r22 ; sätter "null"
+
+	call	HEX_TO_ASCII_AND_INC
+	sts		LINE+7, r22 ; sätter ental sekund i LINE
+
+	call	HEX_TO_ASCII_AND_INC
+	sts		LINE+6, r22 ; sätter tiotal sekund i LINE
+
 	ldi		r22, $3A
-	st		x, r22 ; sätter ":"
-	sbiw	x, 9
-	ldi		r22, $30 
-	ld		r16, X
-	adiw	x, 8
-	st		x, r22 ; sätter ental minut i LINE
-	sbiw	x, 7
-	ldi		r22, $30 
-	ld		r16, X
-	add		r22, r16
-	adiw	x, 6
-	st		x, r22 ; sätter tiotal sekund i LINE
-	sbiw	x, 1
+	sts		LINE+5, r22 ; sätter ":"
+
+	call	HEX_TO_ASCII_AND_INC
+	sts		LINE+4, r22 ; sätter ental minut i LINE
+
+	call	HEX_TO_ASCII_AND_INC
+	sts		LINE+3, r22 ; sätter tiotal sekund i LINE
+
 	ldi		r22, $3A
-	st		x, r22 ; sätter ":"
-	sbiw	x, 4
-	ldi		r22, $30 
-	ld		r16, X
-	adiw	x, 3
-	st		x, r22 ; sätter ental timme i LINE
-	sbiw	x, 2
+	sts		LINE+2, r22 ; sätter ":"
+
+	call	HEX_TO_ASCII_AND_INC
+	sts		LINE+1, r22 ; sätter ental timme i LINE
+
+	call	HEX_TO_ASCII_AND_INC
+	sts		LINE, r22 ; sätter tiotal timme i LINE
+	ret
+
+HEX_TO_ASCII_AND_INC:
 	ldi		r22, $30 
 	ld		r16, X
 	add		r22, r16
 	adiw	x, 1
-	st		x, r22 ; sätter tiotal timme i LINE
-	adiw	x, 8
-	ldi		r22, $00
-	st		x, r22 ; sätter "null"
-
 	ret
 
 BLINK:
