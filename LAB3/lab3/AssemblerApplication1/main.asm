@@ -140,10 +140,10 @@ LCD_ERASE:
 LCD_PRINT:
 	ld		r16,Z+    ; Get next char ld
 	cpi		r16,$00 ; Char = 0? Exit
-	breq	END
+	breq	DONE
 	call	LCD_ASCII
 	jmp		LCD_PRINT
-END:
+DONE:
 	ret
 
 
@@ -154,15 +154,15 @@ LINE_PRINT:
 	call	LCD_PRINT		; print it
 	ret
 
-SAVE_TIME:
-	st		x, r16
-	ret
-
 TIME_TEST:
 	call	TIME_TICK
 	call	TIME_FORMAT
 	call	LINE_PRINT
-	;jmp		TIME_TEST
+	jmp		TIME_TEST
+	ret
+
+SAVE_TIME:
+	st		x, r16
 	ret
 
 TIME_TICK:
@@ -173,29 +173,25 @@ TIME_TICK:
 	ldi		r17,10
 	call	INC_AND_COMPARE
 	brne	SAVE_TIME
-	clr		r16
-	st		x+, r16
+	call	CLEAR_AND_POSTINC
 
 	;Tiotal Sekunder
 	ldi		r17,6
 	call	INC_AND_COMPARE
 	brne	SAVE_TIME
-	clr		r16
-	st		x+, r16
+	call	CLEAR_AND_POSTINC
 
 	;Ental Minuter
 	ldi		r17,10
 	call	INC_AND_COMPARE
 	brne	SAVE_TIME
-	clr		r16
-	st		x+, r16
+	call	CLEAR_AND_POSTINC
 
 	;Tiotal Minuter
 	ldi		r17,6
 	call	INC_AND_COMPARE
 	brne	SAVE_TIME
-	clr		r16
-	st		x+, r16
+	call	CLEAR_AND_POSTINC
 
 	;Ental Timmar
 	ld		r16, x
@@ -212,21 +208,24 @@ NORMAL_SINGULAR_HOUR:
 	cpi		r16, 10 
 	brne	SAVE_TIME
 CONTINUE_SINGULAR_HOUR:
-	clr		r16
-	st		x+, r16
+	call	CLEAR_AND_POSTINC
 
 	;Tiotal Timmar
 	ldi		r17,3
 	call	INC_AND_COMPARE
 	brne	SAVE_TIME
-	clr		r16
-	st		x+, r16
+	call	CLEAR_AND_POSTINC
 	ret
 
 INC_AND_COMPARE:
 	ld		r16, x
 	inc		r16
-	cp		r16, r17 ;Här ska vi istället ha ett variabelvärde för 6
+	cp		r16, r17
+	ret
+
+CLEAR_AND_POSTINC:
+	clr		r16
+	st		x+, r16
 	ret
 
 TIME_FORMAT:

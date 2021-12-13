@@ -1,0 +1,48 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.8</VERSION>
+ <DEVICE>"ATmega328P"</DEVICE>
+ <WORKING_DIR>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\Debug\AssemblerApplication1.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>AssemblerApplication1.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>AssemblerApplication1.map</FILE>
+  <FILE>AssemblerApplication1.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <LINE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>16</LINE></LINE>
+  <start><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>20</LINE></start>
+  <LCD_PORT_INIT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>28</LINE></LCD_PORT_INIT>
+  <LCD_INIT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>34</LINE></LCD_INIT>
+  <FUNKTIONSTEST_AD><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>65</LINE></FUNKTIONSTEST_AD>
+  <stop><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>85</LINE></stop>
+  <WAIT2><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>148</LINE></WAIT2>
+  <BACKLIGHT_ON><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>153</LINE></BACKLIGHT_ON>
+  <LCD_WRITE4><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>104</LINE></LCD_WRITE4>
+  <LCD_COMMAND><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>126</LINE></LCD_COMMAND>
+  <LCD_ERASE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>136</LINE></LCD_ERASE>
+  <ADC_READ8><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>88</LINE></ADC_READ8>
+  <LCD_ASCII><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>120</LINE></LCD_ASCII>
+  <LCD_PRINT_HEX><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>70</LINE></LCD_PRINT_HEX>
+  <NIB2HEX><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>72</LINE></NIB2HEX>
+  <NOT_AF><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>80</LINE></NOT_AF>
+  <CONVERT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>93</LINE></CONVERT>
+  <ADC_BUSY><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>97</LINE></ADC_BUSY>
+  <LCD_WRITE8><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>114</LINE></LCD_WRITE8>
+  <LCD_HOME><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>131</LINE></LCD_HOME>
+  <LINE_PRINT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>141</LINE></LINE_PRINT>
+  <BACKLIGHT_OFF><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>158</LINE></BACKLIGHT_OFF>
+ </LABELS>
+</ASSEMBLER_INFO>
