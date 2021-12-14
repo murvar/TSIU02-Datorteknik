@@ -1,18 +1,18 @@
 <ASSEMBLER_INFO>
  <VERSION>2.2.8</VERSION>
  <DEVICE>"ATmega328P"</DEVICE>
- <WORKING_DIR>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\Debug</WORKING_DIR>
+ <WORKING_DIR>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\Debug</WORKING_DIR>
  <INCLUDE_PATH>
   <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc</DIR>
   <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
   <DIR></DIR>
  </INCLUDE_PATH>
- <SOURCE_FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</SOURCE_FILE>
+ <SOURCE_FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</SOURCE_FILE>
  <INCLUDED_FILES>
   <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc</FILE>
  </INCLUDED_FILES>
  <OBJECT_FILES>
-  <FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\Debug\LAB2.obj</FILE>
+  <FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\Debug\LAB2.obj</FILE>
  </OBJECT_FILES>
  <HEX_FILES>
   <FILE>LAB2.hex</FILE>
@@ -22,25 +22,24 @@
   <FILE>LAB2.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <start><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>9</LINE></start>
-  <MESSAGE><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>104</LINE></MESSAGE>
-  <MORSE><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>21</LINE></MORSE>
-  <GET_CHAR><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>40</LINE></GET_CHAR>
-  <SPACE><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>66</LINE></SPACE>
-  <EXIT><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>79</LINE></EXIT>
-  <LOOKUP><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>71</LINE></LOOKUP>
-  <SEND><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>43</LINE></SEND>
-  <NEXT><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>35</LINE></NEXT>
-  <WAIT><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>95</LINE></WAIT>
-  <GET_BIT><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>62</LINE></GET_BIT>
-  <RETURN><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>59</LINE></RETURN>
-  <LONG><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>50</LINE></LONG>
-  <SHORT><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>47</LINE></SHORT>
-  <CONTINUE><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>52</LINE></CONTINUE>
-  <BEEP><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>82</LINE></BEEP>
-  <NOBEEP><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>86</LINE></NOBEEP>
-  <BTAB><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>105</LINE></BTAB>
-  <EXIT2><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>102</LINE></EXIT2>
-  <WAIT_LONG><FILE>C:\Users\Vincent\Documents\Atmel Studio\7.0\LAB2\LAB2\main.asm</FILE><LINE>90</LINE></WAIT_LONG>
+  <start><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>10</LINE></start>
+  <MESSAGE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>119</LINE></MESSAGE>
+  <MORSE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>24</LINE></MORSE>
+  <GET_CHAR><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>52</LINE></GET_CHAR>
+  <CHECK_ZERO><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>31</LINE></CHECK_ZERO>
+  <WAIT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>113</LINE></WAIT>
+  <NEXT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>44</LINE></NEXT>
+  <TRANSLATE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>35</LINE></TRANSLATE>
+  <LOOKUP><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>58</LINE></LOOKUP>
+  <SEND><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>70</LINE></SEND>
+  <BTAB><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>120</LINE></BTAB>
+  <GET_BIT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>91</LINE></GET_BIT>
+  <RETURN><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>86</LINE></RETURN>
+  <LONG><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>77</LINE></LONG>
+  <SHORT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>74</LINE></SHORT>
+  <CONTINUE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>79</LINE></CONTINUE>
+  <BEEP><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>97</LINE></BEEP>
+  <NOBEEP><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>103</LINE></NOBEEP>
+  <WAIT_LONG><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>109</LINE></WAIT_LONG>
  </LABELS>
 </ASSEMBLER_INFO>

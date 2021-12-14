@@ -14,16 +14,20 @@
 
 	.dseg
 LINE:	.byte	16 
+CUR_POS:.byte	1
 	.cseg
 
 ; Replace with your application code
 start:
+	ldi		r18,1
 	call	LCD_PORT_INIT
 	call	LCD_INIT
-    ;ldi		r16 , $9F
+MAIN:
+	call	KEY_READ
+	call	LCD_COL
 	;call	LCD_PRINT_HEX
-	call	FUNKTIONSTEST_AD
-    rjmp	stop
+
+    rjmp	MAIN
 
 LCD_PORT_INIT:
     ldi		r16, 0b11111111
@@ -58,12 +62,13 @@ LCD_INIT:
 ; --- Clear display
 	call	LCD_ERASE
 ; --- Entry mode : Increment cursor , no shift
-	ldi		r16 , E_MODE
-	call	LCD_COMMAND
+	;ldi		r16 , E_MODE
+	;call	LCD_COMMAND
 	ret
 
 FUNKTIONSTEST_AD:
 	call	ADC_READ8
+	call	KEY
 	call	LCD_ASCII
 	jmp		FUNKTIONSTEST_AD
 
@@ -81,9 +86,6 @@ NOT_AF:
 	call	LCD_ASCII
 	pop		r16
 	ret
-	
-STOP:
-	jmp		STOP
 
 ADC_READ8:
 	ldi		r16,(1<<REFS0)|(1<<ADLAR)|0 ; AVCC/ADLAR/ADC0
@@ -91,14 +93,99 @@ ADC_READ8:
 	ldi		r16,(1 << ADEN)|7 ; ADPS2..0 = 111 = 7
 	sts		ADCSRA,r16
 CONVERT:
-	lds		r16, ADCSRA
-	ori		r17, (1<<ADSC)
+	lds		r16,ADCSRA
+	ori		r16,(1<<ADSC)
 	sts		ADCSRA,r16 ; starta en omvandling
 ADC_BUSY:
-	lds		r16, ADCSRA
+	lds		r16,ADCSRA
 	sbrc	r16,ADSC ; om nollställd är vi klara
-	rjmp	ADC_BUSY ; annars testa busy-biten igen
+	jmp		ADC_BUSY ; annars testa busy-biten igen
 	lds		r16,ADCH ; En läsning av hög byte
+	ret
+
+LCD_COL:
+	cpi		r16,1
+	breq	SELECT
+	cpi		r16,2
+	breq	LEFT
+	cpi		r16,3
+	breq	DOWN
+	cpi		r16,4
+	breq	UP
+	cpi		r16,5
+	breq	RIGHT
+SELECT:
+	cpi		r18,0
+	breq	ON
+OFF:
+	ldi		r18,0
+	call	BACKLIGHT_OFF
+	ret
+ON:
+	ldi		r18,1
+	call	BACKLIGHT_ON
+	ret
+	
+LEFT:
+	ldi		r16 , $1A
+	call	LCD_COMMAND
+	ret
+DOWN:
+	ret
+UP:
+	ret
+RIGHT:
+	ldi		r16 , $16
+	call	LCD_COMMAND
+	ret
+	
+
+KEY_READ :
+	call	KEY
+	tst		r16
+	brne	KEY_READ ; old key still pressed
+KEY_WAIT_FOR_PRESS :
+	call	KEY
+	tst		r16
+	breq	KEY_WAIT_FOR_PRESS ; no key pressed
+	; new key value available
+	ret
+
+KEY:
+	call	ADC_READ8
+
+	cpi		r16,13 ;om r16 mindre än 13? 5
+	brlo	KEY_5
+
+	cpi		r16,43 ;om r16 mindre än 43? 4
+	brlo	KEY_4
+
+	cpi		r16,82 ;om r16 mindre än 82? 3
+	brlo	KEY_3
+
+	cpi		r16,130 ;om r16 mindre än 130? 2
+	brlo	KEY_2
+
+	cpi		r16,207 ;om r16 mindre än 207? 1
+	brlo	KEY_1
+	; annars 0
+KEY_0:
+	ldi		r16,0
+	ret
+KEY_1:
+	ldi		r16,1
+	ret
+KEY_2:
+	ldi		r16,2
+	ret
+KEY_3:
+	ldi		r16,3
+	ret
+KEY_4:
+	ldi		r16,4
+	ret
+KEY_5:
+	ldi		r16,5
 	ret
 
 LCD_WRITE4:
