@@ -20,6 +20,8 @@ TIMER1_INT:
 	call	LINE_PRINT
 	reti
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 	.dseg
 TIME:	.byte	6 ; reserverar sex bytes i sram
 LINE:	.byte	16 
@@ -35,11 +37,15 @@ MAIN:
 IDLE:
     jmp		IDLE
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 LCD_PORT_INIT:
     ldi		r16, 0b11111111
     out		DDRB, r16
     out		DDRD, r16
     ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 LCD_INIT :
 ; --- turn backlight on
@@ -72,6 +78,8 @@ LCD_INIT :
 	call	LCD_COMMAND
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 	.equ SECOND_TICKS = 62500 - 1 ; @ 16/256 MHz
 TIMER1_INIT :
 	ldi r16 ,(1 << WGM12 )|(1 << CS12 ) ; CTC , prescale 256
@@ -83,6 +91,8 @@ TIMER1_INIT :
 	ldi r16 ,(1 << OCIE1A ) ; allow to interrupt
 	sts TIMSK1 , r16
 	ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 TIME_INIT:
 	ldi		r17, 0
@@ -100,6 +110,8 @@ TIME_INIT:
 	sts		TIME+5,r16
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 LCD_WRITE4:
 	sbi		PORTB, E
 	out		PORTD, r16
@@ -110,11 +122,15 @@ LCD_WRITE4:
 	cbi		PORTB, E
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 LCD_WRITE8:
 	call	LCD_WRITE4
 	swap	r16
 	call	LCD_WRITE4
 	ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 LCD_ASCII:
 	NOP
@@ -122,20 +138,28 @@ LCD_ASCII:
 	call	LCD_WRITE8
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 LCD_COMMAND:
 	cbi		PORTB, RS
 	call	LCD_WRITE8
 	ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 LCD_HOME: // flytta pekare till $0
 	ldi		r16 , $02
 	call	LCD_COMMAND
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 LCD_ERASE:
 	ldi		r16 , LCD_CLR
 	call	LCD_COMMAND
 	ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 LCD_PRINT:
 	ld		r16,Z+    ; Get next char ld
@@ -146,6 +170,7 @@ LCD_PRINT:
 DONE:
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 LINE_PRINT:
 	call	LCD_HOME
@@ -154,6 +179,8 @@ LINE_PRINT:
 	call	LCD_PRINT		; print it
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 TIME_TEST:
 	call	TIME_TICK
 	call	TIME_FORMAT
@@ -161,9 +188,13 @@ TIME_TEST:
 	jmp		TIME_TEST
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 SAVE_TIME:
 	st		x, r16
 	ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 TIME_TICK:
 	ldi		XH, HIGH(TIME)
@@ -198,12 +229,13 @@ TIME_TICK:
 	inc		r16
 	lds		r17, TIME+5
 	cpi		r17, 2
-	breq	SPECIAL_SINGULAR_HOUR
 	brne	NORMAL_SINGULAR_HOUR
+
 SPECIAL_SINGULAR_HOUR:
 	cpi		r16, 4
 	brne	SAVE_TIME
 	jmp		CONTINUE_SINGULAR_HOUR
+
 NORMAL_SINGULAR_HOUR:
 	cpi		r16, 10 
 	brne	SAVE_TIME
@@ -217,16 +249,22 @@ CONTINUE_SINGULAR_HOUR:
 	call	CLEAR_AND_POSTINC
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 INC_AND_COMPARE:
 	ld		r16, x
 	inc		r16
 	cp		r16, r17
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 CLEAR_AND_POSTINC:
 	clr		r16
 	st		x+, r16
 	ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 TIME_FORMAT:
 	ldi		XH, HIGH(TIME)
@@ -260,6 +298,8 @@ TIME_FORMAT:
 	sts		LINE, r22 ; sätter tiotal timme i LINE
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 HEX_TO_ASCII_AND_INC:
 	ldi		r22, $30 
 	ld		r16, X
@@ -267,9 +307,13 @@ HEX_TO_ASCII_AND_INC:
 	adiw	x, 1
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 BLINK:
 	call	TIME_TICK
 	jmp		BLINK
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 AGAIN:
 	call	BACKLIGHT_ON
@@ -278,15 +322,21 @@ AGAIN:
 	call	WAIT
 	jmp		AGAIN
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 WAIT:
     adiw    r24, 1
     brne    WAIT
     ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 BACKLIGHT_ON:
 	sbi		PORTB, 2
 	sbi		DDRB, 2
 	ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 BACKLIGHT_OFF:
 	cbi		PORTB, 2

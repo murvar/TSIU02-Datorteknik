@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm Tue Dec 14 09:29:09 2021
+AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm Tue Dec 14 09:57:56 2021
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
@@ -1002,9 +1002,11 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
                                  	.org	OC1Aaddr
                                  TIMER1_INT:
 000016 940e 00a3                 	call	TIME_TICK
-000018 940e 00da                 	call	TIME_FORMAT
+000018 940e 00d9                 	call	TIME_FORMAT
 00001a 940e 0091                 	call	LINE_PRINT
 00001c 9518                      	reti
+                                 
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  	.dseg
 000100                           TIME:	.byte	6 ; reserverar sex bytes i sram
@@ -1021,18 +1023,22 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
                                  IDLE:
 000026 940c 0026                     jmp		IDLE
                                  
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                 
                                  LCD_PORT_INIT:
 000028 ef0f                          ldi		r16, 0b11111111
 000029 b904                          out		DDRB, r16
 00002a b90a                          out		DDRD, r16
 00002b 9508                          ret
                                  
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                 
                                  LCD_INIT :
                                  ; --- turn backlight on
-00002c 940e 0111                 	call	WAIT
-00002e 940e 0114                 	call	BACKLIGHT_ON
+00002c 940e 0110                 	call	WAIT
+00002e 940e 0113                 	call	BACKLIGHT_ON
                                  ; --- wait for LCD ready
-000030 940e 0111                 	call	WAIT
+000030 940e 0110                 	call	WAIT
                                  ;
                                  ; --- First initiate 4- bit mode
                                  ;
@@ -1058,6 +1064,8 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
 000045 940e 007d                 	call	LCD_COMMAND
 000047 9508                      	ret
                                  
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                 
                                  	.equ SECOND_TICKS = 62500 - 1 ; @ 16/256 MHz
                                  TIMER1_INIT :
 000048 e00c                      	ldi r16 ,(1 << WGM12 )|(1 << CS12 ) ; CTC , prescale 256
@@ -1069,6 +1077,8 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
 000051 e002                      	ldi r16 ,(1 << OCIE1A ) ; allow to interrupt
 000052 9300 006f                 	sts TIMSK1 , r16
 000054 9508                      	ret
+                                 
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  TIME_INIT:
 000055 e010                      	ldi		r17, 0
@@ -1086,15 +1096,19 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
 000066 9300 0105                 	sts		TIME+5,r16
 000068 9508                      	ret
                                  
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                 
                                  LCD_WRITE4:
 000069 9a29                      	sbi		PORTB, E
 00006a b90b                      	out		PORTD, r16
 00006b 0000                      	NOP
 00006c 0000                      	NOP
 00006d 0000                      	NOP
-00006e 940e 0111                 	call	WAIT
+00006e 940e 0110                 	call	WAIT
 000070 9829                      	cbi		PORTB, E
 000071 9508                      	ret
+                                 
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  LCD_WRITE8:
 000072 940e 0069                 	call	LCD_WRITE4
@@ -1102,26 +1116,36 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
 000075 940e 0069                 	call	LCD_WRITE4
 000077 9508                      	ret
                                  
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                 
                                  LCD_ASCII:
 000078 0000                      	NOP
 000079 9a28                      	sbi		PORTB, RS
 00007a 940e 0072                 	call	LCD_WRITE8
 00007c 9508                      	ret
                                  
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                 
                                  LCD_COMMAND:
 00007d 9828                      	cbi		PORTB, RS
 00007e 940e 0072                 	call	LCD_WRITE8
 000080 9508                      	ret
+                                 
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  LCD_HOME: // flytta pekare till $0
 000081 e002                      	ldi		r16 , $02
 000082 940e 007d                 	call	LCD_COMMAND
 000084 9508                      	ret
                                  
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                 
                                  LCD_ERASE:
 000085 e001                      	ldi		r16 , LCD_CLR
 000086 940e 007d                 	call	LCD_COMMAND
 000088 9508                      	ret
+                                 
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  LCD_PRINT:
 000089 9101                      	ld		r16,Z+    ; Get next char ld
@@ -1132,6 +1156,7 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
                                  DONE:
 000090 9508                      	ret
                                  
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  LINE_PRINT:
 000091 940e 0081                 	call	LCD_HOME
@@ -1140,16 +1165,22 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
 000095 940e 0089                 	call	LCD_PRINT		; print it
 000097 9508                      	ret
                                  
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                 
                                  TIME_TEST:
 000098 940e 00a3                 	call	TIME_TICK
-00009a 940e 00da                 	call	TIME_FORMAT
+00009a 940e 00d9                 	call	TIME_FORMAT
 00009c 940e 0091                 	call	LINE_PRINT
 00009e 940c 0098                 	jmp		TIME_TEST
 0000a0 9508                      	ret
                                  
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                 
                                  SAVE_TIME:
 0000a1 930c                      	st		x, r16
 0000a2 9508                      	ret
+                                 
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  TIME_TICK:
 0000a3 e0b1                      	ldi		XH, HIGH(TIME)
@@ -1157,126 +1188,145 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
                                  
                                  	;Ental Sekunder
 0000a5 e01a                      	ldi		r17,10
-0000a6 940e 00d3                 	call	INC_AND_COMPARE
+0000a6 940e 00d2                 	call	INC_AND_COMPARE
 0000a8 f7c1                      	brne	SAVE_TIME
-0000a9 940e 00d7                 	call	CLEAR_AND_POSTINC
+0000a9 940e 00d6                 	call	CLEAR_AND_POSTINC
                                  
                                  	;Tiotal Sekunder
 0000ab e016                      	ldi		r17,6
-0000ac 940e 00d3                 	call	INC_AND_COMPARE
+0000ac 940e 00d2                 	call	INC_AND_COMPARE
 0000ae f791                      	brne	SAVE_TIME
-0000af 940e 00d7                 	call	CLEAR_AND_POSTINC
+0000af 940e 00d6                 	call	CLEAR_AND_POSTINC
                                  
                                  	;Ental Minuter
 0000b1 e01a                      	ldi		r17,10
-0000b2 940e 00d3                 	call	INC_AND_COMPARE
+0000b2 940e 00d2                 	call	INC_AND_COMPARE
 0000b4 f761                      	brne	SAVE_TIME
-0000b5 940e 00d7                 	call	CLEAR_AND_POSTINC
+0000b5 940e 00d6                 	call	CLEAR_AND_POSTINC
                                  
                                  	;Tiotal Minuter
 0000b7 e016                      	ldi		r17,6
-0000b8 940e 00d3                 	call	INC_AND_COMPARE
+0000b8 940e 00d2                 	call	INC_AND_COMPARE
 0000ba f731                      	brne	SAVE_TIME
-0000bb 940e 00d7                 	call	CLEAR_AND_POSTINC
+0000bb 940e 00d6                 	call	CLEAR_AND_POSTINC
                                  
                                  	;Ental Timmar
 0000bd 910c                      	ld		r16, x
 0000be 9503                      	inc		r16
 0000bf 9110 0105                 	lds		r17, TIME+5
 0000c1 3012                      	cpi		r17, 2
-0000c2 f009                      	breq	SPECIAL_SINGULAR_HOUR
-0000c3 f421                      	brne	NORMAL_SINGULAR_HOUR
+0000c2 f421                      	brne	NORMAL_SINGULAR_HOUR
+                                 
                                  SPECIAL_SINGULAR_HOUR:
-0000c4 3004                      	cpi		r16, 4
-0000c5 f6d9                      	brne	SAVE_TIME
-0000c6 940c 00ca                 	jmp		CONTINUE_SINGULAR_HOUR
+0000c3 3004                      	cpi		r16, 4
+0000c4 f6e1                      	brne	SAVE_TIME
+0000c5 940c 00c9                 	jmp		CONTINUE_SINGULAR_HOUR
+                                 
                                  NORMAL_SINGULAR_HOUR:
-0000c8 300a                      	cpi		r16, 10 
-0000c9 f6b9                      	brne	SAVE_TIME
+0000c7 300a                      	cpi		r16, 10 
+0000c8 f6c1                      	brne	SAVE_TIME
                                  CONTINUE_SINGULAR_HOUR:
-0000ca 940e 00d7                 	call	CLEAR_AND_POSTINC
+0000c9 940e 00d6                 	call	CLEAR_AND_POSTINC
                                  
                                  	;Tiotal Timmar
-0000cc e013                      	ldi		r17,3
-0000cd 940e 00d3                 	call	INC_AND_COMPARE
-0000cf f689                      	brne	SAVE_TIME
-0000d0 940e 00d7                 	call	CLEAR_AND_POSTINC
-0000d2 9508                      	ret
+0000cb e013                      	ldi		r17,3
+0000cc 940e 00d2                 	call	INC_AND_COMPARE
+0000ce f691                      	brne	SAVE_TIME
+0000cf 940e 00d6                 	call	CLEAR_AND_POSTINC
+0000d1 9508                      	ret
+                                 
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  INC_AND_COMPARE:
-0000d3 910c                      	ld		r16, x
-0000d4 9503                      	inc		r16
-0000d5 1701                      	cp		r16, r17
-0000d6 9508                      	ret
+0000d2 910c                      	ld		r16, x
+0000d3 9503                      	inc		r16
+0000d4 1701                      	cp		r16, r17
+0000d5 9508                      	ret
+                                 
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  CLEAR_AND_POSTINC:
-0000d7 2700                      	clr		r16
-0000d8 930d                      	st		x+, r16
-0000d9 9508                      	ret
+0000d6 2700                      	clr		r16
+0000d7 930d                      	st		x+, r16
+0000d8 9508                      	ret
+                                 
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  TIME_FORMAT:
-0000da e0b1                      	ldi		XH, HIGH(TIME)
-0000db e0a0                      	ldi		XL, LOW(TIME)
+0000d9 e0b1                      	ldi		XH, HIGH(TIME)
+0000da e0a0                      	ldi		XL, LOW(TIME)
                                  
-0000dc e060                      	ldi		r22, $00
-0000dd 9360 010e                 	sts		LINE+8, r22 ; sätter "null"
+0000db e060                      	ldi		r22, $00
+0000dc 9360 010e                 	sts		LINE+8, r22 ; sätter "null"
                                  
-0000df 940e 00fe                 	call	HEX_TO_ASCII_AND_INC
-0000e1 9360 010d                 	sts		LINE+7, r22 ; sätter ental sekund i LINE
+0000de 940e 00fd                 	call	HEX_TO_ASCII_AND_INC
+0000e0 9360 010d                 	sts		LINE+7, r22 ; sätter ental sekund i LINE
                                  
-0000e3 940e 00fe                 	call	HEX_TO_ASCII_AND_INC
-0000e5 9360 010c                 	sts		LINE+6, r22 ; sätter tiotal sekund i LINE
+0000e2 940e 00fd                 	call	HEX_TO_ASCII_AND_INC
+0000e4 9360 010c                 	sts		LINE+6, r22 ; sätter tiotal sekund i LINE
                                  
-0000e7 e36a                      	ldi		r22, $3A
-0000e8 9360 010b                 	sts		LINE+5, r22 ; sätter ":"
+0000e6 e36a                      	ldi		r22, $3A
+0000e7 9360 010b                 	sts		LINE+5, r22 ; sätter ":"
                                  
-0000ea 940e 00fe                 	call	HEX_TO_ASCII_AND_INC
-0000ec 9360 010a                 	sts		LINE+4, r22 ; sätter ental minut i LINE
+0000e9 940e 00fd                 	call	HEX_TO_ASCII_AND_INC
+0000eb 9360 010a                 	sts		LINE+4, r22 ; sätter ental minut i LINE
                                  
-0000ee 940e 00fe                 	call	HEX_TO_ASCII_AND_INC
-0000f0 9360 0109                 	sts		LINE+3, r22 ; sätter tiotal sekund i LINE
+0000ed 940e 00fd                 	call	HEX_TO_ASCII_AND_INC
+0000ef 9360 0109                 	sts		LINE+3, r22 ; sätter tiotal sekund i LINE
                                  
-0000f2 e36a                      	ldi		r22, $3A
-0000f3 9360 0108                 	sts		LINE+2, r22 ; sätter ":"
+0000f1 e36a                      	ldi		r22, $3A
+0000f2 9360 0108                 	sts		LINE+2, r22 ; sätter ":"
                                  
-0000f5 940e 00fe                 	call	HEX_TO_ASCII_AND_INC
-0000f7 9360 0107                 	sts		LINE+1, r22 ; sätter ental timme i LINE
+0000f4 940e 00fd                 	call	HEX_TO_ASCII_AND_INC
+0000f6 9360 0107                 	sts		LINE+1, r22 ; sätter ental timme i LINE
                                  
-0000f9 940e 00fe                 	call	HEX_TO_ASCII_AND_INC
-0000fb 9360 0106                 	sts		LINE, r22 ; sätter tiotal timme i LINE
-0000fd 9508                      	ret
+0000f8 940e 00fd                 	call	HEX_TO_ASCII_AND_INC
+0000fa 9360 0106                 	sts		LINE, r22 ; sätter tiotal timme i LINE
+0000fc 9508                      	ret
+                                 
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  HEX_TO_ASCII_AND_INC:
-0000fe e360                      	ldi		r22, $30 
-0000ff 910c                      	ld		r16, X
-000100 0f60                      	add		r22, r16
-000101 9611                      	adiw	x, 1
-000102 9508                      	ret
+0000fd e360                      	ldi		r22, $30 
+0000fe 910c                      	ld		r16, X
+0000ff 0f60                      	add		r22, r16
+000100 9611                      	adiw	x, 1
+000101 9508                      	ret
+                                 
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  BLINK:
-000103 940e 00a3                 	call	TIME_TICK
-000105 940c 0103                 	jmp		BLINK
+000102 940e 00a3                 	call	TIME_TICK
+000104 940c 0102                 	jmp		BLINK
+                                 
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  AGAIN:
-000107 940e 0114                 	call	BACKLIGHT_ON
-000109 940e 0111                 	call	WAIT
-00010b 940e 0117                 	call	BACKLIGHT_OFF
-00010d 940e 0111                 	call	WAIT
-00010f 940c 0107                 	jmp		AGAIN
+000106 940e 0113                 	call	BACKLIGHT_ON
+000108 940e 0110                 	call	WAIT
+00010a 940e 0116                 	call	BACKLIGHT_OFF
+00010c 940e 0110                 	call	WAIT
+00010e 940c 0106                 	jmp		AGAIN
+                                 
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  WAIT:
-000111 9601                          adiw    r24, 1
-000112 f7f1                          brne    WAIT
-000113 9508                          ret
+000110 9601                          adiw    r24, 1
+000111 f7f1                          brne    WAIT
+000112 9508                          ret
+                                 
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  BACKLIGHT_ON:
-000114 9a2a                      	sbi		PORTB, 2
-000115 9a22                      	sbi		DDRB, 2
-000116 9508                      	ret
+000113 9a2a                      	sbi		PORTB, 2
+000114 9a22                      	sbi		DDRB, 2
+000115 9508                      	ret
+                                 
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  BACKLIGHT_OFF:
-000117 982a                      	cbi		PORTB, 2
-000118 9508                      	ret
+000116 982a                      	cbi		PORTB, 2
+000117 9508                      	ret
 
 
 RESOURCE USE INFORMATION
@@ -1304,7 +1354,7 @@ Registers used: 10 out of 35 (28.6%)
 "ATmega328P" instruction use summary:
 .lds  :   0 .sts  :   0 adc   :   0 add   :   1 adiw  :   2 and   :   0 
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
-brcc  :   0 brcs  :   0 break :   0 breq  :   2 brge  :   0 brhc  :   0 
+brcc  :   0 brcs  :   0 break :   0 breq  :   1 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
 brne  :   9 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
 brvs  :   0 bset  :   0 bst   :   0 call  :  53 cbi   :   3 cbr   :   0 
@@ -1326,7 +1376,7 @@ Instructions used: 23 out of 113 (20.4%)
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x000232    522      0    522   32768   1.6%
+[.cseg] 0x000000 0x000230    520      0    520   32768   1.6%
 [.dseg] 0x000100 0x000116      0     22     22    2048   1.1%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 
