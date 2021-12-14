@@ -151,7 +151,10 @@ ON:
 	ret
 	
 LEFT:
-	ldi		r16,1
+	lds		r16,CUR_POS
+	cpi		r16,0
+	breq	RETURN
+	dec		r16
 	sts		CUR_POS,r16
 	ldi		r16,$10
 	call	LCD_COMMAND
@@ -167,22 +170,43 @@ DOWN:
 	inc		r16
 	st		x,r16 
 	call	LCD_ASCII
-	;ldi		r16,$10
-	;call	LCD_COMMAND
+	ldi		r16,$10
+	call	LCD_COMMAND
 	ret
 EMPTY_CHAR:
 	ldi		r16,65
 	st		x,r16
 	call	LCD_ASCII
+	ldi		r16,$10
+	call	LCD_COMMAND
 	ret
 
 UP:
+	ldi		XH,HIGH(LINE)
+	ldi		XL,LOW(LINE)
+	lds		r16,CUR_POS
+	add		XL,r16	; Move pointer to current column
+	ld		r16,x	;
+	;cpi		r16,0
+	;breq	EMPTY_CHAR
+	dec		r16
+	;cpi		r16,-1
+	;breq	
+	st		x,r16 
+	call	LCD_ASCII
+	ldi		r16,$10
+	call	LCD_COMMAND
 	ret
 RIGHT:
-	ldi		r16,-1 ; Fungerar det här?
+	lds		r16,CUR_POS
+	cpi		r16,15
+	breq	RETURN
+	inc		r16
 	sts		CUR_POS,r16
 	ldi		r16 , $16
 	call	LCD_COMMAND
+	ret
+RETURN:
 	ret
 	
 
