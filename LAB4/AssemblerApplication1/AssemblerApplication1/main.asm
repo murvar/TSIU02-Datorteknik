@@ -8,20 +8,23 @@
 	.equ    FN_SET = $28      ;  4-bit mode, 2-line display, 5 x 8 font
 	.equ    DISP_ON = $0F    ;  display on, cursor on, blink
 	.equ    LCD_CLR = $01    ;  replace all characters with ASCII 'space'
-	.equ    E_MODE =  $06   ; set cursor position
+	.equ    E_MODE =  $6   ; set cursor position
 	.equ	E = 1
 	.equ	RS = 0
 
 	.dseg
-LINE:	.byte	16 
+LINE:	.byte	16+1
 CUR_POS:.byte	1
 	.cseg
 
 ; Replace with your application code
 start:
 	ldi		r18,1
+	ldi		r16,0
+	sts		CUR_POS,r16
 	call	LCD_PORT_INIT
 	call	LCD_INIT
+	call	LINE_INIT
 MAIN:
 	call	KEY_READ
 	call	LCD_COL
@@ -62,8 +65,29 @@ LCD_INIT:
 ; --- Clear display
 	call	LCD_ERASE
 ; --- Entry mode : Increment cursor , no shift
-	;ldi		r16 , E_MODE
-	;call	LCD_COMMAND
+	ldi		r16 , E_MODE
+	call	LCD_COMMAND
+	ret
+
+LINE_INIT:
+	ldi		r16,0
+	sts		LINE+0,r16
+	sts		LINE+1,r16
+	sts		LINE+2,r16
+	sts		LINE+3,r16
+	sts		LINE+4,r16
+	sts		LINE+5,r16
+	sts		LINE+6,r16
+	sts		LINE+7,r16
+	sts		LINE+8,r16
+	sts		LINE+9,r16
+	sts		LINE+10,r16
+	sts		LINE+11,r16
+	sts		LINE+12,r16
+	sts		LINE+13,r16
+	sts		LINE+14,r16
+	sts		LINE+15,r16
+	sts		LINE+16,r16
 	ret
 
 FUNKTIONSTEST_AD:
@@ -127,14 +151,36 @@ ON:
 	ret
 	
 LEFT:
-	ldi		r16 , $1A
+	ldi		r16,1
+	sts		CUR_POS,r16
+	ldi		r16,$10
 	call	LCD_COMMAND
 	ret
 DOWN:
+	ldi		XH,HIGH(LINE)
+	ldi		XL,LOW(LINE)
+	lds		r16,CUR_POS
+	add		XL,r16	; Move pointer to current column
+	ld		r16,x	;
+	cpi		r16,0
+	breq	EMPTY_CHAR
+	inc		r16
+	st		x,r16 
+	call	LCD_ASCII
+	;ldi		r16,$10
+	;call	LCD_COMMAND
 	ret
+EMPTY_CHAR:
+	ldi		r16,65
+	st		x,r16
+	call	LCD_ASCII
+	ret
+
 UP:
 	ret
 RIGHT:
+	ldi		r16,-1 ; Fungerar det här?
+	sts		CUR_POS,r16
 	ldi		r16 , $16
 	call	LCD_COMMAND
 	ret

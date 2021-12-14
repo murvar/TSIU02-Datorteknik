@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm Tue Dec 14 09:46:21 2021
+AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm Tue Dec 14 12:55:29 2021
 
 
 EQU  SIGNATURE_000 0000001e
@@ -695,7 +695,7 @@ EQU  ACIaddr      0000002e
 EQU  TWIaddr      00000030
 EQU  SPMRaddr     00000032
 EQU  INT_VECTORS_SIZE 00000034
-EQU  time         00000014
+EQU  time         0000000a
 CSEG start        00000000
 CSEG MESSAGE      00000056
 CSEG MORSE        0000000e

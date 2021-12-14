@@ -5,7 +5,7 @@
 ; Author : Vincent
 ;
 
-.equ	time=20 ; Length of tone
+.equ	time=10 ; Length of tone
 
 start:
     ldi     r20, low(RAMEND)

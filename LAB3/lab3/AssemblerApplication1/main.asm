@@ -106,7 +106,7 @@ TIME_INIT:
 	sts		TIME+3,r16
 	ldi		r16, 3
 	sts		TIME+4,r16
-	ldi		r16, 2
+	ldi		r16, 1
 	sts		TIME+5,r16
 	ret
 

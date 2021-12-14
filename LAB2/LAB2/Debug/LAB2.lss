@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm Tue Dec 14 09:46:21 2021
+AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm Tue Dec 14 12:55:29 2021
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
@@ -991,7 +991,7 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm T
                                  ; Author : Vincent
                                  ;
                                  
-                                 .equ	time=20 ; Length of tone
+                                 .equ	time=10 ; Length of tone
                                  
                                  start:
 000000 ef4f                          ldi     r20, low(RAMEND)
@@ -1016,7 +1016,7 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm T
 00000e 940e 002a                     call	GET_CHAR
 000010 3200                          cpi		r16,' ' ; Space sign
 000011 f429                          brne	CHECK_ZERO
-000012 e510                      	ldi     r17,(4*time) ; WAIT argument
+000012 e218                      	ldi     r17,(4*time) ; WAIT argument
 000013 940e 0051                     call    WAIT
 000015 940c 0024                 	jmp		NEXT
                                  CHECK_ZERO:
@@ -1034,7 +1034,7 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm T
 000023 910f                          pop     r16
                                  NEXT:
 000024 9631                          adiw    ZL,1 ; Move Z one step
-000025 e218                          ldi     r17,(2*time) ; WAIT argument
+000025 e114                          ldi     r17,(2*time) ; WAIT argument
 000026 940e 0051                     call    WAIT
 000028 940c 000e                     jmp     MORSE
                                  
@@ -1063,15 +1063,15 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm T
 000036 f081                      	breq    RETURN
 000037 f018                          brcs    LONG    ; Long if carry = 1
                                  SHORT:
-000038 e114                          ldi     r17,time
+000038 e01a                          ldi     r17,time
 000039 940c 003c                     jmp     CONTINUE
                                  LONG:
-00003b e31c                          ldi     r17,(3*time)
+00003b e11e                          ldi     r17,(3*time)
                                  CONTINUE:
 00003c 940e 004a                 	call    BEEP
 00003e 940e 0051                     call    WAIT
 000040 940e 004c                     call    NOBEEP
-000042 e114                          ldi     r17,time
+000042 e01a                          ldi     r17,time
 000043 940e 0051                     call    WAIT
 000045 940c 0034                     jmp     SEND
                                  RETURN:
