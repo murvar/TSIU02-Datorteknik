@@ -23,23 +23,24 @@
  </OUTPUT_FILES>
  <LABELS>
   <start><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>10</LINE></start>
-  <MESSAGE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>119</LINE></MESSAGE>
-  <MORSE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>24</LINE></MORSE>
-  <GET_CHAR><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>52</LINE></GET_CHAR>
-  <CHECK_ZERO><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>31</LINE></CHECK_ZERO>
-  <WAIT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>113</LINE></WAIT>
-  <NEXT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>44</LINE></NEXT>
-  <TRANSLATE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>35</LINE></TRANSLATE>
-  <LOOKUP><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>58</LINE></LOOKUP>
-  <SEND><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>70</LINE></SEND>
-  <BTAB><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>120</LINE></BTAB>
-  <GET_BIT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>91</LINE></GET_BIT>
-  <RETURN><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>86</LINE></RETURN>
-  <LONG><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>77</LINE></LONG>
-  <SHORT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>74</LINE></SHORT>
-  <CONTINUE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>79</LINE></CONTINUE>
-  <BEEP><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>97</LINE></BEEP>
-  <NOBEEP><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>103</LINE></NOBEEP>
-  <WAIT_LONG><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>109</LINE></WAIT_LONG>
+  <MESSAGE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>124</LINE></MESSAGE>
+  <MORSE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>29</LINE></MORSE>
+  <LOOP><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>24</LINE></LOOP>
+  <GET_CHAR><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>57</LINE></GET_CHAR>
+  <CHECK_ZERO><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>36</LINE></CHECK_ZERO>
+  <WAIT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>118</LINE></WAIT>
+  <NEXT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>49</LINE></NEXT>
+  <TRANSLATE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>40</LINE></TRANSLATE>
+  <LOOKUP><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>63</LINE></LOOKUP>
+  <SEND><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>75</LINE></SEND>
+  <BTAB><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>125</LINE></BTAB>
+  <GET_BIT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>96</LINE></GET_BIT>
+  <RETURN><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>91</LINE></RETURN>
+  <LONG><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>82</LINE></LONG>
+  <SHORT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>79</LINE></SHORT>
+  <CONTINUE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>84</LINE></CONTINUE>
+  <BEEP><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>102</LINE></BEEP>
+  <NOBEEP><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>108</LINE></NOBEEP>
+  <WAIT_LONG><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm</FILE><LINE>114</LINE></WAIT_LONG>
  </LABELS>
 </ASSEMBLER_INFO>

@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm Tue Dec 14 09:08:17 2021
+AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm Tue Dec 14 09:46:21 2021
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
@@ -998,131 +998,136 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB2\LAB2\main.asm T
 000001 bf4d                          out		SPL, r20
 000002 e048                          ldi		r20, high(RAMEND)
 000003 bf4e                          out		SPH, r20
-000004 eae8                          ldi     ZL,LOW(MESSAGE*2)
+000004 eaec                          ldi     ZL,LOW(MESSAGE*2)
 000005 e0f0                          ldi     ZH,HIGH(MESSAGE*2)
 000006 e140                          ldi     r20,0B00010000 ; Set bit 4 on r20
 000007 b944                          Out     DDRB,r20 ; Activate pin 4
-000008 940e 000c                     call	MORSE
-00000a 940c 0000                 	jmp		start
+000008 940e 000e                     call	MORSE
+00000a 940e 000c                 	call	LOOP
+                                 
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                 
+                                 LOOP:
+00000c 940c 000c                 	jmp		LOOP
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  MORSE:
-00000c 940e 0028                     call	GET_CHAR
-00000e 3200                          cpi		r16,' ' ; Space sign
-00000f f429                          brne	CHECK_ZERO
-000010 e510                      	ldi     r17,(4*time) ; WAIT argument
-000011 940e 004f                     call    WAIT
-000013 940c 0022                 	jmp		NEXT
+00000e 940e 002a                     call	GET_CHAR
+000010 3200                          cpi		r16,' ' ; Space sign
+000011 f429                          brne	CHECK_ZERO
+000012 e510                      	ldi     r17,(4*time) ; WAIT argument
+000013 940e 0051                     call    WAIT
+000015 940c 0024                 	jmp		NEXT
                                  CHECK_ZERO:
-000015 3000                          cpi		r16,$00 ; Char = 0? Restart
-000016 f409                          brne	TRANSLATE
-000017 9508                      	ret
+000017 3000                          cpi		r16,$00 ; Char = 0? Return
+000018 f409                          brne	TRANSLATE
+000019 9508                      	ret
                                  TRANSLATE:
-000018 930f                          push	r16
-000019 93ef                          push	ZL
-00001a 93ff                          push    ZH
-00001b 940e 002a                     call    LOOKUP ; Translate from ASCII to morse
-00001d 940e 0032                     call    SEND ; Char to beep
-00001f 91ff                          pop     ZH
-000020 91ef                          pop     ZL
-000021 910f                          pop     r16
+00001a 930f                          push	r16
+00001b 93ef                          push	ZL
+00001c 93ff                          push    ZH
+00001d 940e 002c                     call    LOOKUP ; Translate from ASCII to morse
+00001f 940e 0034                     call    SEND ; Char to beep
+000021 91ff                          pop     ZH
+000022 91ef                          pop     ZL
+000023 910f                          pop     r16
                                  NEXT:
-000022 9631                          adiw    ZL,1 ; Move Z one step
-000023 e218                          ldi     r17,(2*time) ; WAIT argument
-000024 940e 004f                     call    WAIT
-000026 940c 000c                     jmp     MORSE
+000024 9631                          adiw    ZL,1 ; Move Z one step
+000025 e218                          ldi     r17,(2*time) ; WAIT argument
+000026 940e 0051                     call    WAIT
+000028 940c 000e                     jmp     MORSE
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  GET_CHAR:
-000028 9104                          lpm     r16,Z    ; Get next char
-000029 9508                          ret
+00002a 9104                          lpm     r16,Z    ; Get next char
+00002b 9508                          ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  LOOKUP:
-00002a ebea                          ldi     ZL,LOW(BTAB<<1) ; Read table
-00002b e0f0                          ldi     ZH,HIGH(BTAB<<1)
-00002c 5401                          subi	r16,'A' ; ASCII to table index
-00002d 0fe0                          add     ZL,r16 ; Z points to correct char in table
-00002e e020                      	ldi		r18,0
-00002f 1ff2                      	adc		ZH,R18
-000030 9104                          lpm     r16,Z ; Read char
-000031 9508                          ret
+00002c ebee                          ldi     ZL,LOW(BTAB<<1) ; Read table
+00002d e0f0                          ldi     ZH,HIGH(BTAB<<1)
+00002e 5401                          subi	r16,'A' ; ASCII to table index
+00002f 0fe0                          add     ZL,r16 ; Z points to correct char in table
+000030 e020                      	ldi		r18,0
+000031 1ff2                      	adc		ZH,R18
+000032 9104                          lpm     r16,Z ; Read char
+000033 9508                          ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  SEND:
-000032 940e 0046                 	call	GET_BIT
-000034 f081                      	breq    RETURN
-000035 f018                          brcs    LONG    ; Long if carry = 1
+000034 940e 0048                 	call	GET_BIT
+000036 f081                      	breq    RETURN
+000037 f018                          brcs    LONG    ; Long if carry = 1
                                  SHORT:
-000036 e114                          ldi     r17,time
-000037 940c 003a                     jmp     CONTINUE
+000038 e114                          ldi     r17,time
+000039 940c 003c                     jmp     CONTINUE
                                  LONG:
-000039 e31c                          ldi     r17,(3*time)
+00003b e31c                          ldi     r17,(3*time)
                                  CONTINUE:
-00003a 940e 0048                 	call    BEEP
-00003c 940e 004f                     call    WAIT
-00003e 940e 004a                     call    NOBEEP
-000040 e114                          ldi     r17,time
-000041 940e 004f                     call    WAIT
-000043 940c 0032                     jmp     SEND
+00003c 940e 004a                 	call    BEEP
+00003e 940e 0051                     call    WAIT
+000040 940e 004c                     call    NOBEEP
+000042 e114                          ldi     r17,time
+000043 940e 0051                     call    WAIT
+000045 940c 0034                     jmp     SEND
                                  RETURN:
-000045 9508                          ret
+000047 9508                          ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  GET_BIT:
-000046 0f00                          lsl     r16 ; r16x2, left shift
-000047 9508                      	ret
+000048 0f00                          lsl     r16 ; r16x2, left shift
+000049 9508                      	ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  BEEP:
-000048 9a2c                          sbi     PORTB,4
-000049 9508                          ret
-                                 
-                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                                 
-                                 NOBEEP:
-00004a 982c                          cbi     PORTB,4
+00004a 9a2c                          sbi     PORTB,4
 00004b 9508                          ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
-                                 WAIT_LONG:
-00004c 9601                          adiw    r24,1
-00004d f7f1                          brne    WAIT_LONG
-00004e 9508                          ret
-                                 WAIT:
-00004f 940e 004c                     call    WAIT_LONG
-000051 951a                          dec     r17
-000052 f7e1                          brne    WAIT
-000053 9508                          ret
+                                 NOBEEP:
+00004c 982c                          cbi     PORTB,4
+00004d 9508                          ret
                                  
-000054 4956
-000055 414e
-000056 2048
-000057 4956
-000058 414e
-000059 2048
-00005a 4956
-00005b 414e
-00005c 0048                      MESSAGE:.db     "VINAH VINAH VINAH", $00
-00005d 8860
-00005e 90a8
-00005f 2840
-000060 08d0
-000061 7820
-000062 48b0
-000063 a0e0
-000064 68f0
-000065 50d8
-000066 c010
-000067 1830
-000068 9870
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                 
+                                 WAIT_LONG:
+00004e 9601                          adiw    r24,1
+00004f f7f1                          brne    WAIT_LONG
+000050 9508                          ret
+                                 WAIT:
+000051 940e 004e                     call    WAIT_LONG
+000053 951a                          dec     r17
+000054 f7e1                          brne    WAIT
+000055 9508                          ret
+                                 
+000056 4956
+000057 414e
+000058 2048
+000059 4956
+00005a 414e
+00005b 2048
+00005c 4956
+00005d 414e
+00005e 0048                      MESSAGE:.db     "VINAH VINAH VINAH", $00
+00005f 8860
+000060 90a8
+000061 2840
+000062 08d0
+000063 7820
+000064 48b0
+000065 a0e0
+000066 68f0
+000067 50d8
+000068 c010
+000069 1830
+00006a 9870
 
 
 RESOURCE USE INFORMATION
@@ -1153,7 +1158,7 @@ andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0
 brcc  :   0 brcs  :   1 break :   0 breq  :   1 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
 brne  :   4 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 call  :  12 cbi   :   1 cbr   :   0 
+brvs  :   0 bset  :   0 bst   :   0 call  :  13 cbi   :   1 cbr   :   0 
 clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
 cpi   :   2 cpse  :   0 dec   :   1 eor   :   0 fmul  :   0 fmuls :   0 
@@ -1172,7 +1177,7 @@ Instructions used: 20 out of 113 (17.7%)
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0000d4    168     44    212   32768   0.6%
+[.cseg] 0x000000 0x0000d8    172     44    216   32768   0.7%
 [.dseg] 0x000100 0x000100      0      0      0    2048   0.0%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 

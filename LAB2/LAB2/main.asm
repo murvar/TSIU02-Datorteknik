@@ -34,7 +34,7 @@ MORSE:
     call    WAIT
 	jmp		NEXT
 CHECK_ZERO:
-    cpi		r16,$00 ; Char = 0? Restart
+    cpi		r16,$00 ; Char = 0? Return
     brne	TRANSLATE
 	ret
 TRANSLATE:
