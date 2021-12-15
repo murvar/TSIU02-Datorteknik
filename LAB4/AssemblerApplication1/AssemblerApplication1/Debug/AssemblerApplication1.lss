@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm Tue Dec 14 16:27:56 2021
+AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm Wed Dec 15 09:34:38 2021
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
@@ -988,7 +988,7 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplic
                                  ; AssemblerApplication1.asm
                                  ;
                                  ; Created: 2021-12-13 08:36:56
-                                 ; Author : Vincent
+                                 ; Author : Vincent & Robin
                                  ;
                                  
                                  	.equ    FN_SET = $28      ;  4-bit mode, 2-line display, 5 x 8 font
@@ -1012,7 +1012,7 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplic
 000006 940e 0013                 	call	LCD_INIT
 000008 940e 002f                 	call	LINE_INIT
                                  MAIN:
-00000a 940e 00cc                 	call	KEY_READ
+00000a 940e 00da                 	call	KEY_READ
 00000c 940e 007b                 	call	LCD_COL
                                  	;call	LCD_PRINT_HEX
                                  
@@ -1026,33 +1026,33 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplic
                                  
                                  LCD_INIT:
                                  ; --- turn backlight on
-000013 940e 0114                 	call	WAIT2
-000015 940e 0117                 	call	BACKLIGHT_ON
+000013 940e 0122                 	call	WAIT2
+000015 940e 0125                 	call	BACKLIGHT_ON
                                  ; --- WAIT2 for LCD ready
-000017 940e 0114                 	call	WAIT2
+000017 940e 0122                 	call	WAIT2
                                  ;
                                  ; --- First initiate 4- bit mode
                                  ;
 000019 e300                      	ldi		r16 , $30
-00001a 940e 00ed                 	call	LCD_WRITE4
-00001c 940e 00ed                 	call	LCD_WRITE4
-00001e 940e 00ed                 	call	LCD_WRITE4
+00001a 940e 00fb                 	call	LCD_WRITE4
+00001c 940e 00fb                 	call	LCD_WRITE4
+00001e 940e 00fb                 	call	LCD_WRITE4
 000020 e200                      	ldi		r16 , $20
-000021 940e 00ed                 	call	LCD_WRITE4
+000021 940e 00fb                 	call	LCD_WRITE4
                                  ;
                                  ; --- Now configure display
                                  ;
                                  ; --- Function set : 4 - bit mode , 2 line , 5 x8 font
 000023 e208                      	ldi		r16 , FN_SET
-000024 940e 0101                 	call	LCD_COMMAND
+000024 940e 010f                 	call	LCD_COMMAND
                                  ; --- Display on , cursor on , cursor blink
 000026 e00f                      	ldi		r16 , DISP_ON
-000027 940e 0101                 	call	LCD_COMMAND
+000027 940e 010f                 	call	LCD_COMMAND
                                  ; --- Clear display
-000029 940e 0109                 	call	LCD_ERASE
+000029 940e 0117                 	call	LCD_ERASE
                                  ; --- Entry mode : Increment cursor , no shift
 00002b e006                      	ldi		r16 , E_MODE
-00002c 940e 0101                 	call	LCD_COMMAND
+00002c 940e 010f                 	call	LCD_COMMAND
 00002e 9508                      	ret
                                  
                                  LINE_INIT:
@@ -1078,8 +1078,8 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplic
                                  
                                  FUNKTIONSTEST_AD:
 000053 940e 0068                 	call	ADC_READ8
-000055 940e 00d5                 	call	KEY
-000057 940e 00fc                 	call	LCD_ASCII
+000055 940e 00e3                 	call	KEY
+000057 940e 010a                 	call	LCD_ASCII
 000059 940c 0053                 	jmp		FUNKTIONSTEST_AD
                                  
                                  LCD_PRINT_HEX:
@@ -1093,7 +1093,7 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplic
 000062 f008                      	brlo	NOT_AF
 000063 5f09                      	subi	r16 ,- $07
                                  NOT_AF:
-000064 940e 00fc                 	call	LCD_ASCII
+000064 940e 010a                 	call	LCD_ASCII
 000066 910f                      	pop		r16
 000067 9508                      	ret
                                  
@@ -1119,188 +1119,199 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplic
 00007d 3002                      	cpi		r16,2
 00007e f081                      	breq	LEFT
 00007f 3003                      	cpi		r16,3
-000080 f0c9                      	breq	DOWN
+000080 f129                      	breq	DOWN
 000081 3004                      	cpi		r16,4
-000082 f179                      	breq	UP
+000082 f1e9                      	breq	UP
 000083 3005                      	cpi		r16,5
-000084 f1d9                      	breq	RIGHT
+000084 f0a9                      	breq	RIGHT
                                  SELECT:
 000085 3020                      	cpi		r18,0
 000086 f021                      	breq	ON
                                  OFF:
 000087 e020                      	ldi		r18,0
-000088 940e 011a                 	call	BACKLIGHT_OFF
+000088 940e 0128                 	call	BACKLIGHT_OFF
 00008a 9508                      	ret
                                  ON:
 00008b e021                      	ldi		r18,1
-00008c 940e 0117                 	call	BACKLIGHT_ON
+00008c 940e 0125                 	call	BACKLIGHT_ON
 00008e 9508                      	ret
                                  	
                                  LEFT:
 00008f 9100 0111                 	lds		r16,CUR_POS
 000091 3000                      	cpi		r16,0
-000092 f1c1                      	breq	RETURN
+000092 f091                      	breq	RETURN
 000093 950a                      	dec		r16
 000094 9300 0111                 	sts		CUR_POS,r16
 000096 e100                      	ldi		r16,$10
-000097 940e 0101                 	call	LCD_COMMAND
+000097 940e 010f                 	call	LCD_COMMAND
 000099 9508                      	ret
+                                 
+                                 RIGHT:
+00009a 9100 0111                 	lds		r16,CUR_POS
+00009c 300f                      	cpi		r16,15
+00009d f039                      	breq	RETURN
+00009e 9503                      	inc		r16
+00009f 9300 0111                 	sts		CUR_POS,r16
+0000a1 e106                      	ldi		r16 , $16
+0000a2 940e 010f                 	call	LCD_COMMAND
+0000a4 9508                      	ret
+                                 RETURN:
+0000a5 9508                      	ret
+                                 
                                  DOWN:
-00009a e0b1                      	ldi		XH,HIGH(LINE)
-00009b e0a0                      	ldi		XL,LOW(LINE)
-00009c 9100 0111                 	lds		r16,CUR_POS
-00009e 0fa0                      	add		XL,r16	; Move pointer to current column
-00009f 910c                      	ld		r16,x	;
-0000a0 3000                      	cpi		r16,0
-0000a1 f041                      	breq	EMPTY_CHAR
-0000a2 9503                      	inc		r16
-0000a3 930c                      	st		x,r16 
-0000a4 940e 00fc                 	call	LCD_ASCII
-0000a6 e100                      	ldi		r16,$10
-0000a7 940e 0101                 	call	LCD_COMMAND
-0000a9 9508                      	ret
-                                 EMPTY_CHAR:
-0000aa e401                      	ldi		r16,65
-0000ab 930c                      	st		x,r16
-0000ac 940e 00fc                 	call	LCD_ASCII
-0000ae e100                      	ldi		r16,$10
-0000af 940e 0101                 	call	LCD_COMMAND
-0000b1 9508                      	ret
+0000a6 e0b1                      	ldi		XH,HIGH(LINE)
+0000a7 e0a0                      	ldi		XL,LOW(LINE)
+0000a8 9100 0111                 	lds		r16,CUR_POS
+0000aa 0fa0                      	add		XL,r16	; Move pointer to current column
+0000ab 910c                      	ld		r16,x	;
+0000ac 3000                      	cpi		r16,0
+0000ad f051                      	breq	UNDER_Z
+0000ae 350a                      	cpi		r16,90
+0000af f041                      	breq	UNDER_Z
+0000b0 9503                      	inc		r16
+0000b1 930c                      	st		x,r16 
+0000b2 940e 010a                 	call	LCD_ASCII
+0000b4 e100                      	ldi		r16,$10
+0000b5 940e 010f                 	call	LCD_COMMAND
+0000b7 9508                      	ret
+                                 UNDER_Z:
+0000b8 e401                      	ldi		r16,65
+0000b9 930c                      	st		x,r16
+0000ba 940e 010a                 	call	LCD_ASCII
+0000bc e100                      	ldi		r16,$10
+0000bd 940e 010f                 	call	LCD_COMMAND
+0000bf 9508                      	ret
                                  
                                  UP:
-0000b2 e0b1                      	ldi		XH,HIGH(LINE)
-0000b3 e0a0                      	ldi		XL,LOW(LINE)
-0000b4 9100 0111                 	lds		r16,CUR_POS
-0000b6 0fa0                      	add		XL,r16	; Move pointer to current column
-0000b7 910c                      	ld		r16,x	;
-                                 	;cpi		r16,0
-                                 	;breq	EMPTY_CHAR
-0000b8 950a                      	dec		r16
+0000c0 e0b1                      	ldi		XH,HIGH(LINE)
+0000c1 e0a0                      	ldi		XL,LOW(LINE)
+0000c2 9100 0111                 	lds		r16,CUR_POS
+0000c4 0fa0                      	add		XL,r16	; Move pointer to current column
+0000c5 910c                      	ld		r16,x	;
+0000c6 3000                      	cpi		r16,0
+0000c7 f051                      	breq	OVER_A
+0000c8 3401                      	cpi		r16,65
+0000c9 f041                      	breq	OVER_A
+0000ca 950a                      	dec		r16
                                  	;cpi		r16,-1
                                  	;breq	
-0000b9 930c                      	st		x,r16 
-0000ba 940e 00fc                 	call	LCD_ASCII
-0000bc e100                      	ldi		r16,$10
-0000bd 940e 0101                 	call	LCD_COMMAND
-0000bf 9508                      	ret
-                                 RIGHT:
-0000c0 9100 0111                 	lds		r16,CUR_POS
-0000c2 300f                      	cpi		r16,15
-0000c3 f039                      	breq	RETURN
-0000c4 9503                      	inc		r16
-0000c5 9300 0111                 	sts		CUR_POS,r16
-0000c7 e106                      	ldi		r16 , $16
-0000c8 940e 0101                 	call	LCD_COMMAND
-0000ca 9508                      	ret
-                                 RETURN:
-0000cb 9508                      	ret
+0000cb 930c                      	st		x,r16 
+0000cc 940e 010a                 	call	LCD_ASCII
+0000ce e100                      	ldi		r16,$10
+0000cf 940e 010f                 	call	LCD_COMMAND
+0000d1 9508                      	ret
+                                 OVER_A:
+0000d2 e50a                      	ldi		r16,90
+0000d3 930c                      	st		x,r16
+0000d4 940e 010a                 	call	LCD_ASCII
+0000d6 e100                      	ldi		r16,$10
+0000d7 940e 010f                 	call	LCD_COMMAND
+0000d9 9508                      	ret
                                  	
-                                 
                                  KEY_READ :
-0000cc 940e 00d5                 	call	KEY
-0000ce 2300                      	tst		r16
-0000cf f7e1                      	brne	KEY_READ ; old key still pressed
+0000da 940e 00e3                 	call	KEY
+0000dc 2300                      	tst		r16
+0000dd f7e1                      	brne	KEY_READ ; old key still pressed
                                  KEY_WAIT_FOR_PRESS :
-0000d0 940e 00d5                 	call	KEY
-0000d2 2300                      	tst		r16
-0000d3 f3e1                      	breq	KEY_WAIT_FOR_PRESS ; no key pressed
+0000de 940e 00e3                 	call	KEY
+0000e0 2300                      	tst		r16
+0000e1 f3e1                      	breq	KEY_WAIT_FOR_PRESS ; no key pressed
                                  	; new key value available
-0000d4 9508                      	ret
-                                 
+0000e2 9508                      	ret
                                  KEY:
-0000d5 940e 0068                 	call	ADC_READ8
+0000e3 940e 0068                 	call	ADC_READ8
                                  
-0000d7 300d                      	cpi		r16,13 ;om r16 mindre än 13? 5
-0000d8 f090                      	brlo	KEY_5
+0000e5 300d                      	cpi		r16,13 ;om r16 mindre än 13? 5
+0000e6 f090                      	brlo	KEY_5
                                  
-0000d9 320b                      	cpi		r16,43 ;om r16 mindre än 43? 4
-0000da f070                      	brlo	KEY_4
+0000e7 320b                      	cpi		r16,43 ;om r16 mindre än 43? 4
+0000e8 f070                      	brlo	KEY_4
                                  
-0000db 3502                      	cpi		r16,82 ;om r16 mindre än 82? 3
-0000dc f050                      	brlo	KEY_3
+0000e9 3502                      	cpi		r16,82 ;om r16 mindre än 82? 3
+0000ea f050                      	brlo	KEY_3
                                  
-0000dd 3802                      	cpi		r16,130 ;om r16 mindre än 130? 2
-0000de f030                      	brlo	KEY_2
+0000eb 3802                      	cpi		r16,130 ;om r16 mindre än 130? 2
+0000ec f030                      	brlo	KEY_2
                                  
-0000df 3c0f                      	cpi		r16,207 ;om r16 mindre än 207? 1
-0000e0 f010                      	brlo	KEY_1
+0000ed 3c0f                      	cpi		r16,207 ;om r16 mindre än 207? 1
+0000ee f010                      	brlo	KEY_1
                                  	; annars 0
                                  KEY_0:
-0000e1 e000                      	ldi		r16,0
-0000e2 9508                      	ret
+0000ef e000                      	ldi		r16,0
+0000f0 9508                      	ret
                                  KEY_1:
-0000e3 e001                      	ldi		r16,1
-0000e4 9508                      	ret
+0000f1 e001                      	ldi		r16,1
+0000f2 9508                      	ret
                                  KEY_2:
-0000e5 e002                      	ldi		r16,2
-0000e6 9508                      	ret
+0000f3 e002                      	ldi		r16,2
+0000f4 9508                      	ret
                                  KEY_3:
-0000e7 e003                      	ldi		r16,3
-0000e8 9508                      	ret
+0000f5 e003                      	ldi		r16,3
+0000f6 9508                      	ret
                                  KEY_4:
-0000e9 e004                      	ldi		r16,4
-0000ea 9508                      	ret
+0000f7 e004                      	ldi		r16,4
+0000f8 9508                      	ret
                                  KEY_5:
-0000eb e005                      	ldi		r16,5
-0000ec 9508                      	ret
+0000f9 e005                      	ldi		r16,5
+0000fa 9508                      	ret
                                  
                                  LCD_WRITE4:
-0000ed 9a29                      	sbi		PORTB, E
-0000ee b90b                      	out		PORTD, r16
-0000ef 0000                      	NOP
-0000f0 0000                      	NOP
-0000f1 0000                      	NOP
-0000f2 940e 0114                 	call	WAIT2
-0000f4 9829                      	cbi		PORTB, E
-0000f5 9508                      	ret
+0000fb 9a29                      	sbi		PORTB, E
+0000fc b90b                      	out		PORTD, r16
+0000fd 0000                      	NOP
+0000fe 0000                      	NOP
+0000ff 0000                      	NOP
+000100 940e 0122                 	call	WAIT2
+000102 9829                      	cbi		PORTB, E
+000103 9508                      	ret
                                  
                                  LCD_WRITE8:
-0000f6 940e 00ed                 	call	LCD_WRITE4
-0000f8 9502                      	swap	r16
-0000f9 940e 00ed                 	call	LCD_WRITE4
-0000fb 9508                      	ret
+000104 940e 00fb                 	call	LCD_WRITE4
+000106 9502                      	swap	r16
+000107 940e 00fb                 	call	LCD_WRITE4
+000109 9508                      	ret
                                  
                                  LCD_ASCII:
-0000fc 0000                      	NOP
-0000fd 9a28                      	sbi		PORTB, RS
-0000fe 940e 00f6                 	call	LCD_WRITE8
-000100 9508                      	ret
+00010a 0000                      	NOP
+00010b 9a28                      	sbi		PORTB, RS
+00010c 940e 0104                 	call	LCD_WRITE8
+00010e 9508                      	ret
                                  
                                  LCD_COMMAND:
-000101 9828                      	cbi		PORTB, RS
-000102 940e 00f6                 	call	LCD_WRITE8
-000104 9508                      	ret
+00010f 9828                      	cbi		PORTB, RS
+000110 940e 0104                 	call	LCD_WRITE8
+000112 9508                      	ret
                                  
                                  LCD_HOME: // flytta pekare till $0
-000105 e002                      	ldi		r16 , $02
-000106 940e 0101                 	call	LCD_COMMAND
-000108 9508                      	ret
+000113 e002                      	ldi		r16 , $02
+000114 940e 010f                 	call	LCD_COMMAND
+000116 9508                      	ret
                                  
                                  LCD_ERASE:
-000109 e001                      	ldi		r16 , LCD_CLR
-00010a 940e 0101                 	call	LCD_COMMAND
-00010c 9508                      	ret
+000117 e001                      	ldi		r16 , LCD_CLR
+000118 940e 010f                 	call	LCD_COMMAND
+00011a 9508                      	ret
                                  
                                  LINE_PRINT:
-00010d 940e 0105                 	call	LCD_HOME
-00010f e0f1                      	ldi		ZH,HIGH(LINE)	; start of string
-000110 e0e0                      	ldi		ZL,LOW(LINE)
-000111 940e 005b                 	call	LCD_PRINT_HEX	; print it
-000113 9508                      	ret
+00011b 940e 0113                 	call	LCD_HOME
+00011d e0f1                      	ldi		ZH,HIGH(LINE)	; start of string
+00011e e0e0                      	ldi		ZL,LOW(LINE)
+00011f 940e 005b                 	call	LCD_PRINT_HEX	; print it
+000121 9508                      	ret
                                  
                                  WAIT2:
-000114 9601                          adiw    r24, 1
-000115 f7f1                          brne    WAIT2
-000116 9508                          ret
+000122 9601                          adiw    r24, 1
+000123 f7f1                          brne    WAIT2
+000124 9508                          ret
                                  
                                  BACKLIGHT_ON:
-000117 9a2a                      	sbi		PORTB, 2
-000118 9a22                      	sbi		DDRB, 2
-000119 9508                      	ret
+000125 9a2a                      	sbi		PORTB, 2
+000126 9a22                      	sbi		DDRB, 2
+000127 9508                      	ret
                                  
                                  BACKLIGHT_OFF:
-00011a 982a                      	cbi		PORTB, 2
-00011b 9508                      	ret
+000128 982a                      	cbi		PORTB, 2
+000129 9508                      	ret
                                  
 
 
@@ -1319,9 +1330,9 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATmega328P" register use summary:
-x  :   5 y  :   0 z  :   0 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
+x  :   6 y  :   0 z  :   0 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  93 r17:   0 r18:   4 r19:   0 r20:   0 
+r13:   0 r14:   0 r15:   0 r16:  99 r17:   0 r18:   4 r19:   0 r20:   0 
 r21:   0 r22:   0 r23:   0 r24:   1 r25:   0 r26:   4 r27:   2 r28:   0 
 r29:   0 r30:   1 r31:   1 
 Registers used: 8 out of 35 (22.9%)
@@ -1329,29 +1340,29 @@ Registers used: 8 out of 35 (22.9%)
 "ATmega328P" instruction use summary:
 .lds  :   0 .sts  :   0 adc   :   0 add   :   2 adiw  :   1 and   :   0 
 andi  :   1 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
-brcc  :   0 brcs  :   0 break :   0 breq  :  10 brge  :   0 brhc  :   0 
+brcc  :   0 brcs  :   0 break :   0 breq  :  13 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   6 brlt  :   0 brmi  :   0 
 brne  :   2 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 call  :  43 cbi   :   3 cbr   :   0 
+brvs  :   0 bset  :   0 bst   :   0 call  :  45 cbi   :   3 cbr   :   0 
 clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
-cpi   :  15 cpse  :   0 dec   :   2 eor   :   0 fmul  :   0 fmuls :   0 
+cpi   :  18 cpse  :   0 dec   :   2 eor   :   0 fmul  :   0 fmuls :   0 
 fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   2 jmp   :   2 
-ld    :   2 ldd   :   0 ldi   :  33 lds   :   7 lpm   :   0 lsl   :   0 
+ld    :   2 ldd   :   0 ldi   :  35 lds   :   7 lpm   :   0 lsl   :   0 
 lsr   :   0 mov   :   0 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
 neg   :   0 nop   :   4 or    :   0 ori   :   2 out   :   3 pop   :   1 
-push  :   1 rcall :   0 ret   :  30 reti  :   0 rjmp  :   1 rol   :   0 
+push  :   1 rcall :   0 ret   :  31 reti  :   0 rjmp  :   1 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   4 sbic  :   0 sbis  :   0 
 sbiw  :   0 sbr   :   0 sbrc  :   1 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   0 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
-sez   :   0 sleep :   0 spm   :   0 st    :   3 std   :   0 sts   :  23 
+sez   :   0 sleep :   0 spm   :   0 st    :   4 std   :   0 sts   :  23 
 sub   :   0 subi  :   1 swap  :   2 tst   :   2 wdr   :   0 
 Instructions used: 29 out of 113 (25.7%)
 
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x000238    568      0    568   32768   1.7%
+[.cseg] 0x000000 0x000254    596      0    596   32768   1.8%
 [.dseg] 0x000100 0x000112      0     18     18    2048   0.9%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 

@@ -2,7 +2,7 @@
 ; AssemblerApplication1.asm
 ;
 ; Created: 2021-12-13 08:36:56
-; Author : Vincent
+; Author : Vincent & Robin
 ;
 
 	.equ    FN_SET = $28      ;  4-bit mode, 2-line display, 5 x 8 font
@@ -159,6 +159,19 @@ LEFT:
 	ldi		r16,$10
 	call	LCD_COMMAND
 	ret
+
+RIGHT:
+	lds		r16,CUR_POS
+	cpi		r16,15
+	breq	RETURN
+	inc		r16
+	sts		CUR_POS,r16
+	ldi		r16 , $16
+	call	LCD_COMMAND
+	ret
+RETURN:
+	ret
+
 DOWN:
 	ldi		XH,HIGH(LINE)
 	ldi		XL,LOW(LINE)
@@ -166,14 +179,16 @@ DOWN:
 	add		XL,r16	; Move pointer to current column
 	ld		r16,x	;
 	cpi		r16,0
-	breq	EMPTY_CHAR
+	breq	UNDER_Z
+	cpi		r16,90
+	breq	UNDER_Z
 	inc		r16
 	st		x,r16 
 	call	LCD_ASCII
 	ldi		r16,$10
 	call	LCD_COMMAND
 	ret
-EMPTY_CHAR:
+UNDER_Z:
 	ldi		r16,65
 	st		x,r16
 	call	LCD_ASCII
@@ -187,8 +202,10 @@ UP:
 	lds		r16,CUR_POS
 	add		XL,r16	; Move pointer to current column
 	ld		r16,x	;
-	;cpi		r16,0
-	;breq	EMPTY_CHAR
+	cpi		r16,0
+	breq	OVER_A
+	cpi		r16,65
+	breq	OVER_A
 	dec		r16
 	;cpi		r16,-1
 	;breq	
@@ -197,19 +214,14 @@ UP:
 	ldi		r16,$10
 	call	LCD_COMMAND
 	ret
-RIGHT:
-	lds		r16,CUR_POS
-	cpi		r16,15
-	breq	RETURN
-	inc		r16
-	sts		CUR_POS,r16
-	ldi		r16 , $16
+OVER_A:
+	ldi		r16,90
+	st		x,r16
+	call	LCD_ASCII
+	ldi		r16,$10
 	call	LCD_COMMAND
 	ret
-RETURN:
-	ret
 	
-
 KEY_READ :
 	call	KEY
 	tst		r16
@@ -220,7 +232,6 @@ KEY_WAIT_FOR_PRESS :
 	breq	KEY_WAIT_FOR_PRESS ; no key pressed
 	; new key value available
 	ret
-
 KEY:
 	call	ADC_READ8
 
