@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  D:\TSIU02\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm Wed Dec 15 10:27:51 2021
+AVRASM ver. 2.2.8  D:\TSIU02\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm Wed Dec 15 10:31:08 2021
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
@@ -1293,7 +1293,7 @@ AVRASM ver. 2.2.8  D:\TSIU02\tsiu02\LAB4\AssemblerApplication1\AssemblerApplicat
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  WAIT:
-0000f3 e04a                      	ldi		r20, 10
+0000f3 e042                      	ldi		r20, 2
 0000f4 940c 00f9                 	jmp		WAIT_LOOP
                                  
                                  WAIT_LONG:
