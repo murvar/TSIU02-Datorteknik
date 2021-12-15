@@ -17,7 +17,8 @@ LINE:	.byte	16+1
 CUR_POS:.byte	1
 	.cseg
 
-; Replace with your application code
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 start:
 	ldi		r18,1
 	ldi		r16,0
@@ -28,9 +29,9 @@ start:
 MAIN:
 	call	KEY_READ
 	call	LCD_COL
-	;call	LCD_PRINT_HEX
-
     rjmp	MAIN
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 LCD_PORT_INIT:
     ldi		r16, 0b11111111
@@ -38,12 +39,14 @@ LCD_PORT_INIT:
     out		DDRD, r16
     ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 LCD_INIT:
 ; --- turn backlight on
-	call	WAIT2
+	call	WAIT
 	call	BACKLIGHT_ON
-; --- WAIT2 for LCD ready
-	call	WAIT2
+; --- WAIT for LCD ready
+	call	WAIT
 ;
 ; --- First initiate 4- bit mode
 ;
@@ -69,6 +72,8 @@ LCD_INIT:
 	call	LCD_COMMAND
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 LINE_INIT:
 	ldi		r16,0
 	sts		LINE+0,r16
@@ -90,26 +95,7 @@ LINE_INIT:
 	sts		LINE+16,r16
 	ret
 
-FUNKTIONSTEST_AD:
-	call	ADC_READ8
-	call	KEY
-	call	LCD_ASCII
-	jmp		FUNKTIONSTEST_AD
-
-LCD_PRINT_HEX:
-	call	NIB2HEX
-NIB2HEX:
-	swap	r16
-	push	r16
-	andi	r16 , $0F
-	ori		r16 , $30
-	cpi		r16 , ':'
-	brlo	NOT_AF
-	subi	r16 ,- $07
-NOT_AF:
-	call	LCD_ASCII
-	pop		r16
-	ret
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ADC_READ8:
 	ldi		r16,(1<<REFS0)|(1<<ADLAR)|0 ; AVCC/ADLAR/ADC0
@@ -127,6 +113,8 @@ ADC_BUSY:
 	lds		r16,ADCH ; En läsning av hög byte
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 LCD_COL:
 	cpi		r16,1
 	breq	SELECT
@@ -138,6 +126,9 @@ LCD_COL:
 	breq	UP
 	cpi		r16,5
 	breq	RIGHT
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 SELECT:
 	cpi		r18,0
 	breq	ON
@@ -149,6 +140,8 @@ ON:
 	ldi		r18,1
 	call	BACKLIGHT_ON
 	ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
 	
 LEFT:
 	lds		r16,CUR_POS
@@ -157,8 +150,7 @@ LEFT:
 	dec		r16
 	sts		CUR_POS,r16
 	ldi		r16,$10
-	call	LCD_COMMAND
-	ret
+	jmp		COMMAND_N_RETURN
 
 RIGHT:
 	lds		r16,CUR_POS
@@ -167,60 +159,57 @@ RIGHT:
 	inc		r16
 	sts		CUR_POS,r16
 	ldi		r16 , $16
-	call	LCD_COMMAND
+	jmp		COMMAND_N_RETURN
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+DOWN:
+	call	INIT_X
+	breq	TO_Z
+	cpi		r16,90
+	breq	TO_Z
+	inc		r16
+	jmp		STORE_N_DISPLAY
+
+UP:
+	call	INIT_X
+	breq	TO_A
+	cpi		r16,65
+	breq	TO_A
+	dec		r16
+	jmp		STORE_N_DISPLAY
+
+; Initierar X-pekare m.h.a. CUR_POS
+INIT_X:
+	ldi		XH,HIGH(LINE)
+	ldi		XL,LOW(LINE)
+	lds		r16,CUR_POS
+	add		XL,r16
+	ld		r16,x	
+	cpi		r16,0
 	ret
+
+TO_Z:
+	ldi		r16,65
+	jmp		STORE_N_DISPLAY
+
+TO_A:
+	ldi		r16,90
+	jmp		STORE_N_DISPLAY
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Lagrar r16 i SRAM, hoppar tillbaka vänster m.h.a. COMMAND
+; Vill hellre att vi kan skippa vänster/höger hopp.
+STORE_N_DISPLAY:
+	st		x,r16 
+	call	LCD_ASCII
+	ldi		r16,$10
+COMMAND_N_RETURN:
+	call	LCD_COMMAND
 RETURN:
 	ret
 
-DOWN:
-	ldi		XH,HIGH(LINE)
-	ldi		XL,LOW(LINE)
-	lds		r16,CUR_POS
-	add		XL,r16	; Move pointer to current column
-	ld		r16,x	;
-	cpi		r16,0
-	breq	UNDER_Z
-	cpi		r16,90
-	breq	UNDER_Z
-	inc		r16
-	st		x,r16 
-	call	LCD_ASCII
-	ldi		r16,$10
-	call	LCD_COMMAND
-	ret
-UNDER_Z:
-	ldi		r16,65
-	st		x,r16
-	call	LCD_ASCII
-	ldi		r16,$10
-	call	LCD_COMMAND
-	ret
-
-UP:
-	ldi		XH,HIGH(LINE)
-	ldi		XL,LOW(LINE)
-	lds		r16,CUR_POS
-	add		XL,r16	; Move pointer to current column
-	ld		r16,x	;
-	cpi		r16,0
-	breq	OVER_A
-	cpi		r16,65
-	breq	OVER_A
-	dec		r16
-	;cpi		r16,-1
-	;breq	
-	st		x,r16 
-	call	LCD_ASCII
-	ldi		r16,$10
-	call	LCD_COMMAND
-	ret
-OVER_A:
-	ldi		r16,90
-	st		x,r16
-	call	LCD_ASCII
-	ldi		r16,$10
-	call	LCD_COMMAND
-	ret
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	
 KEY_READ :
 	call	KEY
@@ -229,9 +218,7 @@ KEY_READ :
 KEY_WAIT_FOR_PRESS :
 	call	KEY
 	tst		r16
-	breq	KEY_WAIT_FOR_PRESS ; no key pressed
-	; new key value available
-	ret
+	breq	KEY_WAIT_FOR_PRESS ; no key presse	ret;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 KEY:
 	call	ADC_READ8
 
@@ -249,7 +236,7 @@ KEY:
 
 	cpi		r16,207 ;om r16 mindre än 207? 1
 	brlo	KEY_1
-	; annars 0
+
 KEY_0:
 	ldi		r16,0
 	ret
@@ -269,15 +256,19 @@ KEY_5:
 	ldi		r16,5
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 LCD_WRITE4:
 	sbi		PORTB, E
 	out		PORTD, r16
 	NOP
 	NOP
 	NOP
-	call	WAIT2
+	call	WAIT
 	cbi		PORTB, E
 	ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 LCD_WRITE8:
 	call	LCD_WRITE4
@@ -285,38 +276,51 @@ LCD_WRITE8:
 	call	LCD_WRITE4
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 LCD_ASCII:
 	NOP
 	sbi		PORTB, RS
 	call	LCD_WRITE8
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 LCD_COMMAND:
 	cbi		PORTB, RS
 	call	LCD_WRITE8
 	ret
 
-LCD_HOME: // flytta pekare till $0
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Flyttar pekare till kolumn 0
+LCD_HOME:
 	ldi		r16 , $02
 	call	LCD_COMMAND
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Rensar fönster
 LCD_ERASE:
 	ldi		r16 , LCD_CLR
 	call	LCD_COMMAND
 	ret
 
-LINE_PRINT:
-	call	LCD_HOME
-	ldi		ZH,HIGH(LINE)	; start of string
-	ldi		ZL,LOW(LINE)
-	call	LCD_PRINT_HEX	; print it
-	ret
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+WAIT:
+	ldi		r20, 10
+	jmp		WAIT_LOOP
 
-WAIT2:
-    adiw    r24, 1
-    brne    WAIT2
+WAIT_LONG:
+    adiw    r24,1
+    brne    WAIT_LONG
     ret
+WAIT_LOOP:
+    call    WAIT_LONG
+    dec     r20
+    brne    WAIT_LOOP
+    ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 BACKLIGHT_ON:
 	sbi		PORTB, 2
@@ -327,3 +331,4 @@ BACKLIGHT_OFF:
 	cbi		PORTB, 2
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
