@@ -6,7 +6,7 @@
 ;
 
 	.equ    FN_SET = $28      ;  4-bit mode, 2-line display, 5 x 8 font
-	.equ    DISP_ON = $0F    ;  display on, cursor on, blink
+	.equ    DISP_ON = $0E    ;  display on, cursor on, blink
 	.equ    LCD_CLR = $01    ;  replace all characters with ASCII 'space'
 	.equ    E_MODE =  $6   ; set cursor position
 	.equ	E = 1
@@ -76,23 +76,17 @@ LCD_INIT:
 
 LINE_INIT:
 	ldi		r16,0
-	sts		LINE+0,r16
-	sts		LINE+1,r16
-	sts		LINE+2,r16
-	sts		LINE+3,r16
-	sts		LINE+4,r16
-	sts		LINE+5,r16
-	sts		LINE+6,r16
-	sts		LINE+7,r16
-	sts		LINE+8,r16
-	sts		LINE+9,r16
-	sts		LINE+10,r16
-	sts		LINE+11,r16
-	sts		LINE+12,r16
-	sts		LINE+13,r16
-	sts		LINE+14,r16
-	sts		LINE+15,r16
-	sts		LINE+16,r16
+	ldi		r17,0
+	ldi		XH,HIGH(LINE)
+	ldi		XL,LOW(LINE)
+
+LOOP_LINE:
+	cpi		r16,16
+	breq	LINE_FIN
+	st		x+,r17
+	inc		r16
+	jmp		LOOP_LINE
+LINE_FIN:
 	ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -165,6 +159,7 @@ RIGHT:
 
 DOWN:
 	call	INIT_X
+	cpi		r16,0
 	breq	TO_Z
 	cpi		r16,90
 	breq	TO_Z
@@ -173,6 +168,7 @@ DOWN:
 
 UP:
 	call	INIT_X
+	cpi		r16,0
 	breq	TO_A
 	cpi		r16,65
 	breq	TO_A
@@ -186,7 +182,6 @@ INIT_X:
 	lds		r16,CUR_POS
 	add		XL,r16
 	ld		r16,x	
-	cpi		r16,0
 	ret
 
 TO_Z:
