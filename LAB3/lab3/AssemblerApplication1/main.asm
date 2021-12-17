@@ -190,12 +190,6 @@ TIME_TEST:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-SAVE_TIME:
-	st		x, r16
-	ret
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 TIME_TICK:
 	ldi		XH, HIGH(TIME)
 	ldi		XL, LOW(TIME)
@@ -205,27 +199,33 @@ TIME_TICK_LOOP:
 	lpm		r17, Z+		; hämtar max-värde i tabell FLASH 
 	ld		r16, x		; hämtar nuvarande tid
 	inc		r16			; ökar m 1
-	cpi		r16, 4
-	breq	SPECIAL_CASE
-CONTINUE_TIME_TICK_LOOP:
 	cp		r16, r17	; jämför tid m maxvärde 
 	brne	SAVE_TIME	; != kör savetime
 	clr		r16			; sätt till 0
 	st		x+, r16		; lagra 0an, öka
 	jmp		TIME_TICK_LOOP	; loopa om
+
+SAVE_TIME:
+	st		x, r16
+	cpi		r16, 4
+	breq	SPECIAL_CASE
+	ret
+
 SPECIAL_CASE:
 	ldi		r18, 4
 	lds		r19, TIME+4
 	cpse	r19, r18
-	jmp		CONTINUE_TIME_TICK_LOOP
+	ret
 
 	ldi		r18, 2
 	lds		r19, TIME+5
 	cpse	r19, r18
-	jmp		CONTINUE_TIME_TICK_LOOP
+	ret
 
 	call	TIME_ZERO
 	ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 TIME_ZERO:
     ldi        r16,0
@@ -247,33 +247,28 @@ TIME_ZERO_FIN:
 TIME_FORMAT:
 	ldi		XH, HIGH(TIME)
 	ldi		XL, LOW(TIME)
+	ldi		YH, HIGH(LINE)
+	ldi		YL, LOW(LINE)
+	ldi		ZH, HIGH(TIME_FORMAT_TABLE*2)
+	ldi		ZL, LOW(TIME_FORMAT_TABLE*2)
+	adiw	Y,7
 
-	ldi		r22, $00
-	sts		LINE+8, r22 ; sätter "null"
+LOOP_TIME_FORMAT:
+	lpm		r22,z+
+	cpi		r22,$3A
+	breq	STORE
+	cpi		r22,$00
+	breq	FINISH
+	ld		r16, X+
+	add		r22, r16 ; hex to ascii
 
-	call	HEX_TO_ASCII_AND_INC
-	sts		LINE+7, r22 ; sätter ental sekund i LINE
-
-	call	HEX_TO_ASCII_AND_INC
-	sts		LINE+6, r22 ; sätter tiotal sekund i LINE
-
-	ldi		r22, $3A
-	sts		LINE+5, r22 ; sätter ":"
-
-	call	HEX_TO_ASCII_AND_INC
-	sts		LINE+4, r22 ; sätter ental minut i LINE
-
-	call	HEX_TO_ASCII_AND_INC
-	sts		LINE+3, r22 ; sätter tiotal sekund i LINE
-
-	ldi		r22, $3A
-	sts		LINE+2, r22 ; sätter ":"
-
-	call	HEX_TO_ASCII_AND_INC
-	sts		LINE+1, r22 ; sätter ental timme i LINE
-
-	call	HEX_TO_ASCII_AND_INC
-	sts		LINE, r22 ; sätter tiotal timme i LINE
+STORE:
+	st		y, r22 
+	sbiw	y,1
+	jmp		LOOP_TIME_FORMAT
+FINISH:
+	adiw	y,9
+	st		y, r22 
 	ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -321,3 +316,5 @@ BACKLIGHT_OFF:
 	ret
 
 TIME_TABLE:.db	10, 6, 10, 6, 10, 6
+
+TIME_FORMAT_TABLE:.db	$30, $30, $3A, $30, $30, $3A, $30, $30, $00
