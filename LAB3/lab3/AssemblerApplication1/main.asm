@@ -6,7 +6,7 @@
 ;
 
 	.equ    FN_SET = $28      ;  4-bit mode, 2-line display, 5 x 8 font
-	.equ    DISP_ON = $0F    ;  display on, cursor on, blink
+	.equ    DISP_ON = $0C    ;  display on, cursor on, blink
 	.equ    LCD_CLR = $01    ;  replace all characters with ASCII 'space'
 	.equ    E_MODE =  $06   ; set cursor position
 	.equ	E = 1
@@ -195,6 +195,8 @@ TIME_TICK:
 	ldi		XL, LOW(TIME)
 	ldi		ZH, HIGH(TIME_TABLE*2)
 	ldi		ZL, LOW(TIME_TABLE*2)
+	in      r16,SREG
+    push    r16
 TIME_TICK_LOOP:
 	lpm		r17, Z+		; hämtar max-värde i tabell FLASH 
 	ld		r16, x		; hämtar nuvarande tid
@@ -209,22 +211,25 @@ SAVE_TIME:
 	st		x, r16
 	cpi		r16, 4
 	breq	SPECIAL_CASE
-	ret
+	jmp		SAVE_SREG
 
 SPECIAL_CASE:
 	ldi		r18, 4
 	lds		r19, TIME+4
 	cpse	r19, r18
-	ret
+	jmp		SAVE_SREG
 
 	ldi		r18, 2
 	lds		r19, TIME+5
 	cpse	r19, r18
-	ret
+	jmp		SAVE_SREG
 
 	call	TIME_ZERO
+	
+SAVE_SREG:
+	pop     r16
+    out     SREG,r16
 	ret
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 TIME_ZERO:
@@ -273,15 +278,6 @@ FINISH:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-HEX_TO_ASCII_AND_INC:
-	ldi		r22, $30 
-	ld		r16, X
-	add		r22, r16
-	adiw	x, 1
-	ret
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 BLINK:
 	call	TIME_TICK
 	jmp		BLINK
@@ -315,6 +311,6 @@ BACKLIGHT_OFF:
 	cbi		PORTB, 2
 	ret
 
-TIME_TABLE:.db	10, 6, 10, 6, 10, 6
+TIME_TABLE:.db	10, 06, 10, 06, 10, 06
 
 TIME_FORMAT_TABLE:.db	$30, $30, $3A, $30, $30, $3A, $30, $30, $00
