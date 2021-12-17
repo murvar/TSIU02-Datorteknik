@@ -106,7 +106,7 @@ TIME_INIT:
 	sts		TIME+3,r16
 	ldi		r16, 3
 	sts		TIME+4,r16
-	ldi		r16, 1
+	ldi		r16, 2
 	sts		TIME+5,r16
 	ret
 
@@ -199,70 +199,48 @@ SAVE_TIME:
 TIME_TICK:
 	ldi		XH, HIGH(TIME)
 	ldi		XL, LOW(TIME)
-
-	;Ental Sekunder
-	ldi		r17,10
-	call	INC_AND_COMPARE
-	brne	SAVE_TIME
-	call	CLEAR_AND_POSTINC
-
-	;Tiotal Sekunder
-	ldi		r17,6
-	call	INC_AND_COMPARE
-	brne	SAVE_TIME
-	call	CLEAR_AND_POSTINC
-
-	;Ental Minuter
-	ldi		r17,10
-	call	INC_AND_COMPARE
-	brne	SAVE_TIME
-	call	CLEAR_AND_POSTINC
-
-	;Tiotal Minuter
-	ldi		r17,6
-	call	INC_AND_COMPARE
-	brne	SAVE_TIME
-	call	CLEAR_AND_POSTINC
-
-	;Ental Timmar
-	ld		r16, x
-	inc		r16
-	lds		r17, TIME+5
-	cpi		r17, 2
-	brne	NORMAL_SINGULAR_HOUR
-
-SPECIAL_SINGULAR_HOUR:
+	ldi		ZH, HIGH(TIME_TABLE*2)
+	ldi		ZL, LOW(TIME_TABLE*2)
+TIME_TICK_LOOP:
+	lpm		r17, Z+		; hämtar max-värde i tabell FLASH 
+	ld		r16, x		; hämtar nuvarande tid
+	inc		r16			; ökar m 1
 	cpi		r16, 4
-	brne	SAVE_TIME
-	jmp		CONTINUE_SINGULAR_HOUR
+	breq	SPECIAL_CASE
+CONTINUE_TIME_TICK_LOOP:
+	cp		r16, r17	; jämför tid m maxvärde 
+	brne	SAVE_TIME	; != kör savetime
+	clr		r16			; sätt till 0
+	st		x+, r16		; lagra 0an, öka
+	jmp		TIME_TICK_LOOP	; loopa om
+SPECIAL_CASE:
+	ldi		r18, 4
+	lds		r19, TIME+4
+	cpse	r19, r18
+	jmp		CONTINUE_TIME_TICK_LOOP
 
-NORMAL_SINGULAR_HOUR:
-	cpi		r16, 10 
-	brne	SAVE_TIME
-CONTINUE_SINGULAR_HOUR:
-	call	CLEAR_AND_POSTINC
+	ldi		r18, 2
+	lds		r19, TIME+5
+	cpse	r19, r18
+	jmp		CONTINUE_TIME_TICK_LOOP
 
-	;Tiotal Timmar
-	ldi		r17,3
-	call	INC_AND_COMPARE
-	brne	SAVE_TIME
-	call	CLEAR_AND_POSTINC
+	call	TIME_ZERO
 	ret
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+TIME_ZERO:
+    ldi        r16,0
+    ldi        r17,0
+    ldi        XH,HIGH(TIME)
+    ldi        XL,LOW(TIME)
 
-INC_AND_COMPARE:
-	ld		r16, x
-	inc		r16
-	cp		r16, r17
-	ret
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-CLEAR_AND_POSTINC:
-	clr		r16
-	st		x+, r16
-	ret
+LOOP_TIME_ZERO:
+    cpi			r16,6
+    breq		TIME_ZERO_FIN
+    st			x+,r17
+    inc			r16
+    jmp			LOOP_TIME_ZERO
+TIME_ZERO_FIN:
+    ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -341,3 +319,5 @@ BACKLIGHT_ON:
 BACKLIGHT_OFF:
 	cbi		PORTB, 2
 	ret
+
+TIME_TABLE:.db	10, 6, 10, 6, 10, 6
