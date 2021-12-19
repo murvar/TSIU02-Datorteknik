@@ -302,7 +302,7 @@ LCD_ERASE:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 WAIT:
-	ldi		r20, 2
+	ldi		r20, 5
 	jmp		WAIT_LOOP
 
 WAIT_LONG:
