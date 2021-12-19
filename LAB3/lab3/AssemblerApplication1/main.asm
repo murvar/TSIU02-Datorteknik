@@ -15,9 +15,13 @@
 	jmp		MAIN
 	.org	OC1Aaddr
 TIMER1_INT:
+	in      r16,SREG
+    push    r16
 	call	TIME_TICK
 	call	TIME_FORMAT
-	call	LINE_PRINT
+	call	LINE_PRINT'
+	pop		r16
+	out		SREG, r16
 	reti
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -181,22 +185,11 @@ LINE_PRINT:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-TIME_TEST:
-	call	TIME_TICK
-	call	TIME_FORMAT
-	call	LINE_PRINT
-	jmp		TIME_TEST
-	ret
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 TIME_TICK:
 	ldi		XH, HIGH(TIME)
 	ldi		XL, LOW(TIME)
 	ldi		ZH, HIGH(TIME_TABLE*2)
 	ldi		ZL, LOW(TIME_TABLE*2)
-	in      r16,SREG
-    push    r16
 TIME_TICK_LOOP:
 	lpm		r17, Z+		; hämtar max-värde i tabell FLASH 
 	ld		r16, x		; hämtar nuvarande tid
@@ -211,24 +204,22 @@ SAVE_TIME:
 	st		x, r16
 	cpi		r16, 4
 	breq	SPECIAL_CASE
-	jmp		SAVE_SREG
+	jmp		RETURN
 
 SPECIAL_CASE:
 	ldi		r18, 4
 	lds		r19, TIME+4
 	cpse	r19, r18
-	jmp		SAVE_SREG
+	jmp		RETURN
 
 	ldi		r18, 2
 	lds		r19, TIME+5
 	cpse	r19, r18
-	jmp		SAVE_SREG
+	jmp		RETURN
 
 	call	TIME_ZERO
 	
-SAVE_SREG:
-	pop     r16
-    out     SREG,r16
+RETURN:
 	ret
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -275,21 +266,6 @@ FINISH:
 	adiw	y,9
 	st		y, r22 
 	ret
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-BLINK:
-	call	TIME_TICK
-	jmp		BLINK
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-AGAIN:
-	call	BACKLIGHT_ON
-	call	WAIT
-	call	BACKLIGHT_OFF
-	call	WAIT
-	jmp		AGAIN
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
