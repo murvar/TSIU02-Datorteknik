@@ -1,18 +1,18 @@
 <ASSEMBLER_INFO>
  <VERSION>2.2.8</VERSION>
  <DEVICE>"ATmega328P"</DEVICE>
- <WORKING_DIR>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\Debug</WORKING_DIR>
+ <WORKING_DIR>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\Debug</WORKING_DIR>
  <INCLUDE_PATH>
   <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc</DIR>
   <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
   <DIR></DIR>
  </INCLUDE_PATH>
- <SOURCE_FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</SOURCE_FILE>
+ <SOURCE_FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</SOURCE_FILE>
  <INCLUDED_FILES>
   <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc</FILE>
  </INCLUDED_FILES>
  <OBJECT_FILES>
-  <FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\Debug\AssemblerApplication1.obj</FILE>
+  <FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\Debug\AssemblerApplication1.obj</FILE>
  </OBJECT_FILES>
  <HEX_FILES>
   <FILE>AssemblerApplication1.hex</FILE>
@@ -22,40 +22,40 @@
   <FILE>AssemblerApplication1.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <MAIN><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>35</LINE></MAIN>
-  <TIMER1_INT><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>17</LINE></TIMER1_INT>
-  <TIME_TICK><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>188</LINE></TIME_TICK>
-  <TIME_FORMAT><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>243</LINE></TIME_FORMAT>
-  <LINE_PRINT><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>179</LINE></LINE_PRINT>
-  <TIME><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>30</LINE></TIME>
-  <LINE><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>31</LINE></LINE>
-  <LCD_PORT_INIT><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>46</LINE></LCD_PORT_INIT>
-  <LCD_INIT><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>54</LINE></LCD_INIT>
-  <TIME_INIT><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>101</LINE></TIME_INIT>
-  <TIMER1_INIT><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>88</LINE></TIMER1_INIT>
-  <IDLE><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>41</LINE></IDLE>
-  <WAIT><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>272</LINE></WAIT>
-  <BACKLIGHT_ON><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>279</LINE></BACKLIGHT_ON>
-  <LCD_WRITE4><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>119</LINE></LCD_WRITE4>
-  <LCD_COMMAND><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>147</LINE></LCD_COMMAND>
-  <LCD_ERASE><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>161</LINE></LCD_ERASE>
-  <LCD_WRITE8><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>131</LINE></LCD_WRITE8>
-  <LCD_ASCII><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>139</LINE></LCD_ASCII>
-  <LCD_HOME><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>154</LINE></LCD_HOME>
-  <LCD_PRINT><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>168</LINE></LCD_PRINT>
-  <DONE><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>174</LINE></DONE>
-  <TIME_TABLE><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>290</LINE></TIME_TABLE>
-  <TIME_TICK_LOOP><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>193</LINE></TIME_TICK_LOOP>
-  <SAVE_TIME><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>203</LINE></SAVE_TIME>
-  <SPECIAL_CASE><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>209</LINE></SPECIAL_CASE>
-  <RETURN><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>222</LINE></RETURN>
-  <TIME_ZERO><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>226</LINE></TIME_ZERO>
-  <LOOP_TIME_ZERO><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>232</LINE></LOOP_TIME_ZERO>
-  <TIME_ZERO_FIN><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>238</LINE></TIME_ZERO_FIN>
-  <TIME_FORMAT_TABLE><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>292</LINE></TIME_FORMAT_TABLE>
-  <LOOP_TIME_FORMAT><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>252</LINE></LOOP_TIME_FORMAT>
-  <STORE><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>261</LINE></STORE>
-  <FINISH><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>265</LINE></FINISH>
-  <BACKLIGHT_OFF><FILE>D:\TSIU02\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>286</LINE></BACKLIGHT_OFF>
+  <MAIN><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>39</LINE></MAIN>
+  <AVBROTT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>19</LINE></AVBROTT>
+  <TIME_TICK><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>192</LINE></TIME_TICK>
+  <TIME_FORMAT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>253</LINE></TIME_FORMAT>
+  <LINE_PRINT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>183</LINE></LINE_PRINT>
+  <TIME><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>34</LINE></TIME>
+  <LINE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>35</LINE></LINE>
+  <LCD_PORT_INIT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>50</LINE></LCD_PORT_INIT>
+  <LCD_INIT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>58</LINE></LCD_INIT>
+  <TIME_INIT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>105</LINE></TIME_INIT>
+  <TIMER1_INIT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>92</LINE></TIMER1_INIT>
+  <IDLE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>45</LINE></IDLE>
+  <WAIT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>282</LINE></WAIT>
+  <BACKLIGHT_ON><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>289</LINE></BACKLIGHT_ON>
+  <LCD_WRITE4><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>123</LINE></LCD_WRITE4>
+  <LCD_COMMAND><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>151</LINE></LCD_COMMAND>
+  <LCD_ERASE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>165</LINE></LCD_ERASE>
+  <LCD_WRITE8><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>135</LINE></LCD_WRITE8>
+  <LCD_ASCII><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>143</LINE></LCD_ASCII>
+  <LCD_HOME><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>158</LINE></LCD_HOME>
+  <LCD_PRINT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>172</LINE></LCD_PRINT>
+  <DONE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>178</LINE></DONE>
+  <TIME_TABLE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>300</LINE></TIME_TABLE>
+  <TIME_TICK_LOOP><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>200</LINE></TIME_TICK_LOOP>
+  <SAVE_TIME><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>210</LINE></SAVE_TIME>
+  <SPECIAL_CASE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>216</LINE></SPECIAL_CASE>
+  <RETURN><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>229</LINE></RETURN>
+  <TIME_ZERO><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>236</LINE></TIME_ZERO>
+  <LOOP_TIME_ZERO><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>242</LINE></LOOP_TIME_ZERO>
+  <TIME_ZERO_FIN><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>248</LINE></TIME_ZERO_FIN>
+  <TIME_FORMAT_TABLE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>302</LINE></TIME_FORMAT_TABLE>
+  <LOOP_TIME_FORMAT><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>262</LINE></LOOP_TIME_FORMAT>
+  <STORE><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>271</LINE></STORE>
+  <FINISH><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>275</LINE></FINISH>
+  <BACKLIGHT_OFF><FILE>C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm</FILE><LINE>296</LINE></BACKLIGHT_OFF>
  </LABELS>
 </ASSEMBLER_INFO>

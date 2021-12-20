@@ -14,7 +14,10 @@
 
 	jmp		MAIN
 	.org	OC1Aaddr
-TIMER1_INT:
+	jmp		AVBROTT
+
+AVBROTT:
+	push	r16
 	in      r16,SREG
     push    r16
 	call	TIME_TICK
@@ -22,6 +25,7 @@ TIMER1_INT:
 	call	LINE_PRINT'
 	pop		r16
 	out		SREG, r16
+	pop		r16
 	reti
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -186,6 +190,9 @@ LINE_PRINT:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 TIME_TICK:
+	push	r17
+	push	r18
+	push	r19
 	ldi		XH, HIGH(TIME)
 	ldi		XL, LOW(TIME)
 	ldi		ZH, HIGH(TIME_TABLE*2)
@@ -220,6 +227,9 @@ SPECIAL_CASE:
 	call	TIME_ZERO
 	
 RETURN:
+	pop		r17
+	pop		r18
+	pop		r19
 	ret
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
