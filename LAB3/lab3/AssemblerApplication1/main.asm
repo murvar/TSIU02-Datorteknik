@@ -26,6 +26,7 @@ AVBROTT:
 	pop		r16
 	out		SREG, r16
 	pop		r16
+
 	reti
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -181,18 +182,27 @@ DONE:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 LINE_PRINT:
+	push	ZH
+	push	ZL
 	call	LCD_HOME
 	ldi		ZH,HIGH(LINE)	; start of string
 	ldi		ZL,LOW(LINE)
 	call	LCD_PRINT		; print it
+	pop		ZL
+	pop		ZH
 	ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 TIME_TICK:
+	push	r16
 	push	r17
 	push	r18
 	push	r19
+	push	ZH
+	push	ZL
+	push	XH
+	push	XL
 	ldi		XH, HIGH(TIME)
 	ldi		XL, LOW(TIME)
 	ldi		ZH, HIGH(TIME_TABLE*2)
@@ -227,30 +237,51 @@ SPECIAL_CASE:
 	call	TIME_ZERO
 	
 RETURN:
-	pop		r17
-	pop		r18
+	pop		XL
+	pop		XH
+	pop		ZL
+	pop		ZH
 	pop		r19
+	pop		r18
+	pop		r17
+	pop		r16
 	ret
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 TIME_ZERO:
-    ldi        r16,0
-    ldi        r17,0
-    ldi        XH,HIGH(TIME)
-    ldi        XL,LOW(TIME)
+	push	r16
+	push	r17
+	push	XH
+	push	XL
+    ldi		r16,0
+    ldi     r17,0
+    ldi     XH,HIGH(TIME)
+    ldi     XL,LOW(TIME)
 
 LOOP_TIME_ZERO:
-    cpi			r16,6
-    breq		TIME_ZERO_FIN
-    st			x+,r17
-    inc			r16
-    jmp			LOOP_TIME_ZERO
+    cpi		r16,6
+    breq	TIME_ZERO_FIN
+    st		x+,r17
+    inc		r16
+    jmp		LOOP_TIME_ZERO
 TIME_ZERO_FIN:
+	pop		XL
+	pop		XH
+	pop		r17
+	pop		r16
     ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 TIME_FORMAT:
+	push	XH
+	push	XL
+	push	YH
+	push	YL
+	push	ZH
+	push	ZL
+	push	r22
+	push	r16
 	ldi		XH, HIGH(TIME)
 	ldi		XL, LOW(TIME)
 	ldi		YH, HIGH(LINE)
@@ -275,6 +306,14 @@ STORE:
 FINISH:
 	adiw	y,9
 	st		y, r22 
+	pop		r16
+	pop		r22
+	pop		ZL
+	pop		ZH
+	pop		YL
+	pop		YH
+	pop		XL
+	pop		XH
 	ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

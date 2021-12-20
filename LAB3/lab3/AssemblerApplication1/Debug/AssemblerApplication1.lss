@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm Mon Dec 20 12:36:57 2021
+AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm Mon Dec 20 12:52:35 2021
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
@@ -1006,12 +1006,13 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
 000018 930f                      	push	r16
 000019 b70f                      	in      r16,SREG
 00001a 930f                          push    r16
-00001b 940e 00a0                 	call	TIME_TICK
-00001d 940e 00d2                 	call	TIME_FORMAT
+00001b 940e 00a4                 	call	TIME_TICK
+00001d 940e 00e8                 	call	TIME_FORMAT
 00001f 940e 0099                 	call	LINE_PRINT
 000021 910f                      	pop		r16
 000022 bf0f                      	out		SREG, r16
 000023 910f                      	pop		r16
+                                 
 000024 9518                      	reti
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1043,10 +1044,10 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
                                  
                                  LCD_INIT :
                                  ; --- turn backlight on
-000034 940e 00e7                 	call	WAIT
-000036 940e 00ea                 	call	BACKLIGHT_ON
+000034 940e 010d                 	call	WAIT
+000036 940e 0110                 	call	BACKLIGHT_ON
                                  ; --- wait for LCD ready
-000038 940e 00e7                 	call	WAIT
+000038 940e 010d                 	call	WAIT
                                  ;
                                  ; --- First initiate 4- bit mode
                                  ;
@@ -1112,7 +1113,7 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
 000073 0000                      	NOP
 000074 0000                      	NOP
 000075 0000                      	NOP
-000076 940e 00e7                 	call	WAIT
+000076 940e 010d                 	call	WAIT
 000078 9829                      	cbi		PORTB, E
 000079 9508                      	ret
                                  
@@ -1167,131 +1168,169 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  LINE_PRINT:
-000099 940e 0089                 	call	LCD_HOME
-00009b e0f1                      	ldi		ZH,HIGH(LINE)	; start of string
-00009c e0e6                      	ldi		ZL,LOW(LINE)
-00009d 940e 0091                 	call	LCD_PRINT		; print it
-00009f 9508                      	ret
+000099 93ff                      	push	ZH
+00009a 93ef                      	push	ZL
+00009b 940e 0089                 	call	LCD_HOME
+00009d e0f1                      	ldi		ZH,HIGH(LINE)	; start of string
+00009e e0e6                      	ldi		ZL,LOW(LINE)
+00009f 940e 0091                 	call	LCD_PRINT		; print it
+0000a1 91ef                      	pop		ZL
+0000a2 91ff                      	pop		ZH
+0000a3 9508                      	ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  TIME_TICK:
-0000a0 931f                      	push	r17
-0000a1 932f                      	push	r18
-0000a2 933f                      	push	r19
-0000a3 e0b1                      	ldi		XH, HIGH(TIME)
-0000a4 e0a0                      	ldi		XL, LOW(TIME)
-0000a5 e0f1                      	ldi		ZH, HIGH(TIME_TABLE*2)
-0000a6 edee                      	ldi		ZL, LOW(TIME_TABLE*2)
+0000a4 930f                      	push	r16
+0000a5 931f                      	push	r17
+0000a6 932f                      	push	r18
+0000a7 933f                      	push	r19
+0000a8 93ff                      	push	ZH
+0000a9 93ef                      	push	ZL
+0000aa 93bf                      	push	XH
+0000ab 93af                      	push	XL
+0000ac e0b1                      	ldi		XH, HIGH(TIME)
+0000ad e0a0                      	ldi		XL, LOW(TIME)
+0000ae e0f2                      	ldi		ZH, HIGH(TIME_TABLE*2)
+0000af e2ea                      	ldi		ZL, LOW(TIME_TABLE*2)
                                  TIME_TICK_LOOP:
-0000a7 9115                      	lpm		r17, Z+		; hämtar max-värde i tabell FLASH 
-0000a8 910c                      	ld		r16, x		; hämtar nuvarande tid
-0000a9 9503                      	inc		r16			; ökar m 1
-0000aa 1701                      	cp		r16, r17	; jämför tid m maxvärde 
-0000ab f421                      	brne	SAVE_TIME	; != kör savetime
-0000ac 2700                      	clr		r16			; sätt till 0
-0000ad 930d                      	st		x+, r16		; lagra 0an, öka
-0000ae 940c 00a7                 	jmp		TIME_TICK_LOOP	; loopa om
+0000b0 9115                      	lpm		r17, Z+		; hämtar max-värde i tabell FLASH 
+0000b1 910c                      	ld		r16, x		; hämtar nuvarande tid
+0000b2 9503                      	inc		r16			; ökar m 1
+0000b3 1701                      	cp		r16, r17	; jämför tid m maxvärde 
+0000b4 f421                      	brne	SAVE_TIME	; != kör savetime
+0000b5 2700                      	clr		r16			; sätt till 0
+0000b6 930d                      	st		x+, r16		; lagra 0an, öka
+0000b7 940c 00b0                 	jmp		TIME_TICK_LOOP	; loopa om
                                  
                                  SAVE_TIME:
-0000b0 930c                      	st		x, r16
-0000b1 3004                      	cpi		r16, 4
-0000b2 f011                      	breq	SPECIAL_CASE
-0000b3 940c 00c3                 	jmp		RETURN
+0000b9 930c                      	st		x, r16
+0000ba 3004                      	cpi		r16, 4
+0000bb f011                      	breq	SPECIAL_CASE
+0000bc 940c 00cc                 	jmp		RETURN
                                  
                                  SPECIAL_CASE:
-0000b5 e024                      	ldi		r18, 4
-0000b6 9130 0104                 	lds		r19, TIME+4
-0000b8 1332                      	cpse	r19, r18
-0000b9 940c 00c3                 	jmp		RETURN
+0000be e024                      	ldi		r18, 4
+0000bf 9130 0104                 	lds		r19, TIME+4
+0000c1 1332                      	cpse	r19, r18
+0000c2 940c 00cc                 	jmp		RETURN
                                  
-0000bb e022                      	ldi		r18, 2
-0000bc 9130 0105                 	lds		r19, TIME+5
-0000be 1332                      	cpse	r19, r18
-0000bf 940c 00c3                 	jmp		RETURN
+0000c4 e022                      	ldi		r18, 2
+0000c5 9130 0105                 	lds		r19, TIME+5
+0000c7 1332                      	cpse	r19, r18
+0000c8 940c 00cc                 	jmp		RETURN
                                  
-0000c1 940e 00c7                 	call	TIME_ZERO
+0000ca 940e 00d5                 	call	TIME_ZERO
                                  	
                                  RETURN:
-0000c3 911f                      	pop		r17
-0000c4 912f                      	pop		r18
-0000c5 913f                      	pop		r19
-0000c6 9508                      	ret
+0000cc 91af                      	pop		XL
+0000cd 91bf                      	pop		XH
+0000ce 91ef                      	pop		ZL
+0000cf 91ff                      	pop		ZH
+0000d0 913f                      	pop		r19
+0000d1 912f                      	pop		r18
+0000d2 911f                      	pop		r17
+0000d3 910f                      	pop		r16
+0000d4 9508                      	ret
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  TIME_ZERO:
-0000c7 e000                          ldi        r16,0
-0000c8 e010                          ldi        r17,0
-0000c9 e0b1                          ldi        XH,HIGH(TIME)
-0000ca e0a0                          ldi        XL,LOW(TIME)
+0000d5 930f                      	push	r16
+0000d6 931f                      	push	r17
+0000d7 93bf                      	push	XH
+0000d8 93af                      	push	XL
+0000d9 e000                          ldi		r16,0
+0000da e010                          ldi     r17,0
+0000db e0b1                          ldi     XH,HIGH(TIME)
+0000dc e0a0                          ldi     XL,LOW(TIME)
                                  
                                  LOOP_TIME_ZERO:
-0000cb 3006                          cpi			r16,6
-0000cc f021                          breq		TIME_ZERO_FIN
-0000cd 931d                          st			x+,r17
-0000ce 9503                          inc			r16
-0000cf 940c 00cb                     jmp			LOOP_TIME_ZERO
+0000dd 3006                          cpi		r16,6
+0000de f021                          breq	TIME_ZERO_FIN
+0000df 931d                          st		x+,r17
+0000e0 9503                          inc		r16
+0000e1 940c 00dd                     jmp		LOOP_TIME_ZERO
                                  TIME_ZERO_FIN:
-0000d1 9508                          ret
+0000e3 91af                      	pop		XL
+0000e4 91bf                      	pop		XH
+0000e5 911f                      	pop		r17
+0000e6 910f                      	pop		r16
+0000e7 9508                          ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  TIME_FORMAT:
-0000d2 e0b1                      	ldi		XH, HIGH(TIME)
-0000d3 e0a0                      	ldi		XL, LOW(TIME)
-0000d4 e0d1                      	ldi		YH, HIGH(LINE)
-0000d5 e0c6                      	ldi		YL, LOW(LINE)
-0000d6 e0f1                      	ldi		ZH, HIGH(TIME_FORMAT_TABLE*2)
-0000d7 eee4                      	ldi		ZL, LOW(TIME_FORMAT_TABLE*2)
-0000d8 9627                      	adiw	Y,7
+0000e8 93bf                      	push	XH
+0000e9 93af                      	push	XL
+0000ea 93df                      	push	YH
+0000eb 93cf                      	push	YL
+0000ec 93ff                      	push	ZH
+0000ed 93ef                      	push	ZL
+0000ee 936f                      	push	r22
+0000ef 930f                      	push	r16
+0000f0 e0b1                      	ldi		XH, HIGH(TIME)
+0000f1 e0a0                      	ldi		XL, LOW(TIME)
+0000f2 e0d1                      	ldi		YH, HIGH(LINE)
+0000f3 e0c6                      	ldi		YL, LOW(LINE)
+0000f4 e0f2                      	ldi		ZH, HIGH(TIME_FORMAT_TABLE*2)
+0000f5 e3e0                      	ldi		ZL, LOW(TIME_FORMAT_TABLE*2)
+0000f6 9627                      	adiw	Y,7
                                  
                                  LOOP_TIME_FORMAT:
-0000d9 9165                      	lpm		r22,z+
-0000da 336a                      	cpi		r22,$3A
-0000db f021                      	breq	STORE
-0000dc 3060                      	cpi		r22,$00
-0000dd f031                      	breq	FINISH
-0000de 910d                      	ld		r16, X+
-0000df 0f60                      	add		r22, r16 ; hex to ascii
+0000f7 9165                      	lpm		r22,z+
+0000f8 336a                      	cpi		r22,$3A
+0000f9 f021                      	breq	STORE
+0000fa 3060                      	cpi		r22,$00
+0000fb f031                      	breq	FINISH
+0000fc 910d                      	ld		r16, X+
+0000fd 0f60                      	add		r22, r16 ; hex to ascii
                                  
                                  STORE:
-0000e0 8368                      	st		y, r22 
-0000e1 9721                      	sbiw	y,1
-0000e2 940c 00d9                 	jmp		LOOP_TIME_FORMAT
+0000fe 8368                      	st		y, r22 
+0000ff 9721                      	sbiw	y,1
+000100 940c 00f7                 	jmp		LOOP_TIME_FORMAT
                                  FINISH:
-0000e4 9629                      	adiw	y,9
-0000e5 8368                      	st		y, r22 
-0000e6 9508                      	ret
+000102 9629                      	adiw	y,9
+000103 8368                      	st		y, r22 
+000104 910f                      	pop		r16
+000105 916f                      	pop		r22
+000106 91ef                      	pop		ZL
+000107 91ff                      	pop		ZH
+000108 91cf                      	pop		YL
+000109 91df                      	pop		YH
+00010a 91af                      	pop		XL
+00010b 91bf                      	pop		XH
+00010c 9508                      	ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  WAIT:
-0000e7 9601                          adiw    r24, 1
-0000e8 f7f1                          brne    WAIT
-0000e9 9508                          ret
+00010d 9601                          adiw    r24, 1
+00010e f7f1                          brne    WAIT
+00010f 9508                          ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  BACKLIGHT_ON:
-0000ea 9a2a                      	sbi		PORTB, 2
-0000eb 9a22                      	sbi		DDRB, 2
-0000ec 9508                      	ret
+000110 9a2a                      	sbi		PORTB, 2
+000111 9a22                      	sbi		DDRB, 2
+000112 9508                      	ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  BACKLIGHT_OFF:
-0000ed 982a                      	cbi		PORTB, 2
-0000ee 9508                      	ret
+000113 982a                      	cbi		PORTB, 2
+000114 9508                      	ret
                                  
-0000ef 060a
-0000f0 060a
-0000f1 060a                      TIME_TABLE:.db	10, 06, 10, 06, 10, 06
+000115 060a
+000116 060a
+000117 060a                      TIME_TABLE:.db	10, 06, 10, 06, 10, 06
                                  
-0000f2 3030
-0000f3 303a
-0000f4 3a30
-0000f5 3030
-C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm(302): warning: .cseg .db misalignment - padding zero byte
+000118 3030
+000119 303a
+00011a 3a30
+00011b 3030
+C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm(341): warning: .cseg .db misalignment - padding zero byte
 
 
 RESOURCE USE INFORMATION
@@ -1311,9 +1350,9 @@ counted separately from r26..r31 here.
 "ATmega328P" register use summary:
 x  :   5 y  :   5 z  :   3 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  52 r17:   7 r18:   6 r19:   6 r20:   0 
-r21:   0 r22:   6 r23:   0 r24:   1 r25:   0 r26:   3 r27:   3 r28:   1 
-r29:   1 r30:   3 r31:   3 
+r13:   0 r14:   0 r15:   0 r16:  58 r17:   9 r18:   6 r19:   6 r20:   0 
+r21:   0 r22:   8 r23:   0 r24:   1 r25:   0 r26:   9 r27:   9 r28:   3 
+r29:   3 r30:   9 r31:   9 
 Registers used: 15 out of 35 (42.9%)
 
 "ATmega328P" instruction use summary:
@@ -1329,8 +1368,8 @@ cpi   :   5 cpse  :   2 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0
 fmulsu:   0 icall :   0 ijmp  :   0 in    :   1 inc   :   2 jmp   :  10 
 ld    :   3 ldd   :   0 ldi   :  37 lds   :   2 lpm   :   2 lsl   :   0 
 lsr   :   0 mov   :   0 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   4 or    :   0 ori   :   0 out   :   4 pop   :   5 
-push  :   5 rcall :   0 ret   :  18 reti  :   1 rjmp  :   0 rol   :   0 
+neg   :   0 nop   :   4 or    :   0 ori   :   0 out   :   4 pop   :  24 
+push  :  24 rcall :   0 ret   :  18 reti  :   1 rjmp  :   0 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   4 sbic  :   0 sbis  :   0 
 sbiw  :   1 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
@@ -1341,7 +1380,7 @@ Instructions used: 29 out of 113 (25.7%)
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0001ee    438     16    454   32768   1.4%
+[.cseg] 0x000000 0x00023a    514     16    530   32768   1.6%
 [.dseg] 0x000100 0x000116      0     22     22    2048   1.1%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 
