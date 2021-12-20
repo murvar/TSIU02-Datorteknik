@@ -22,7 +22,7 @@ AVBROTT:
     push    r16
 	call	TIME_TICK
 	call	TIME_FORMAT
-	call	LINE_PRINT'
+	call	LINE_PRINT
 	pop		r16
 	out		SREG, r16
 	pop		r16

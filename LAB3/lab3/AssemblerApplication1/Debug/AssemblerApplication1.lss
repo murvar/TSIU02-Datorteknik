@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm Mon Dec 20 12:14:07 2021
+AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerApplication1\main.asm Mon Dec 20 12:36:57 2021
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
@@ -1008,7 +1008,7 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB3\lab3\AssemblerA
 00001a 930f                          push    r16
 00001b 940e 00a0                 	call	TIME_TICK
 00001d 940e 00d2                 	call	TIME_FORMAT
-00001f 940e 0099                 	call	LINE_PRINT'
+00001f 940e 0099                 	call	LINE_PRINT
 000021 910f                      	pop		r16
 000022 bf0f                      	out		SREG, r16
 000023 910f                      	pop		r16
