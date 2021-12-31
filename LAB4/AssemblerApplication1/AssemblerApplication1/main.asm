@@ -129,11 +129,11 @@ SELECT:
 OFF:
 	ldi		r18,0
 	call	BACKLIGHT_OFF
-	ret
+	jmp		RETURN
 ON:
 	ldi		r18,1
 	call	BACKLIGHT_ON
-	ret
+	jmp		RETURN
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 	
@@ -175,15 +175,6 @@ UP:
 	dec		r16
 	jmp		STORE_N_DISPLAY
 
-; Initierar X-pekare m.h.a. CUR_POS
-INIT_X:
-	ldi		XH,HIGH(LINE)
-	ldi		XL,LOW(LINE)
-	lds		r16,CUR_POS
-	add		XL,r16
-	ld		r16,x	
-	ret
-
 TO_Z:
 	ldi		r16,65
 	jmp		STORE_N_DISPLAY
@@ -205,7 +196,18 @@ RETURN:
 	ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; Initierar X-pekare m.h.a. CUR_POS
+INIT_X:
+	ldi		XH,HIGH(LINE)
+	ldi		XL,LOW(LINE)
+	lds		r16,CUR_POS
+	add		XL,r16
+	ld		r16,x	
+	ret
 	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 KEY_READ :
 	call	KEY
 	tst		r16
@@ -234,21 +236,22 @@ KEY:
 
 KEY_0:
 	ldi		r16,0
-	ret
+	jmp		EXIT_KEY
 KEY_1:
 	ldi		r16,1
-	ret
+	jmp		EXIT_KEY
 KEY_2:
 	ldi		r16,2
-	ret
+	jmp		EXIT_KEY
 KEY_3:
 	ldi		r16,3
-	ret
+	jmp		EXIT_KEY
 KEY_4:
 	ldi		r16,4
-	ret
+	jmp		EXIT_KEY
 KEY_5:
 	ldi		r16,5
+EXIT_KEY:
 	ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

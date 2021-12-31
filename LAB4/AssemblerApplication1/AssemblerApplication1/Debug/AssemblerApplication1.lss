@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm Fri Dec 17 16:34:44 2021
+AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplication1\AssemblerApplication1\main.asm Fri Dec 31 12:10:05 2021
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
@@ -1013,7 +1013,7 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplic
 000006 940e 0013                 	call	LCD_INIT
 000008 940e 002f                 	call	LINE_INIT
                                  MAIN:
-00000a 940e 009b                 	call	KEY_READ
+00000a 940e 009d                 	call	KEY_READ
 00000c 940e 004d                 	call	LCD_COL
 00000e cffb                          rjmp	MAIN
                                  
@@ -1029,33 +1029,33 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplic
                                  
                                  LCD_INIT:
                                  ; --- turn backlight on
-000013 940e 00db                 	call	WAIT
-000015 940e 00e6                 	call	BACKLIGHT_ON
+000013 940e 00dd                 	call	WAIT
+000015 940e 00e8                 	call	BACKLIGHT_ON
                                  ; --- WAIT for LCD ready
-000017 940e 00db                 	call	WAIT
+000017 940e 00dd                 	call	WAIT
                                  ;
                                  ; --- First initiate 4- bit mode
                                  ;
 000019 e300                      	ldi		r16 , $30
-00001a 940e 00bb                 	call	LCD_WRITE4
-00001c 940e 00bb                 	call	LCD_WRITE4
-00001e 940e 00bb                 	call	LCD_WRITE4
+00001a 940e 00bd                 	call	LCD_WRITE4
+00001c 940e 00bd                 	call	LCD_WRITE4
+00001e 940e 00bd                 	call	LCD_WRITE4
 000020 e200                      	ldi		r16 , $20
-000021 940e 00bb                 	call	LCD_WRITE4
+000021 940e 00bd                 	call	LCD_WRITE4
                                  ;
                                  ; --- Now configure display
                                  ;
                                  ; --- Function set : 4 - bit mode , 2 line , 5 x8 font
 000023 e208                      	ldi		r16 , FN_SET
-000024 940e 00cf                 	call	LCD_COMMAND
+000024 940e 00d1                 	call	LCD_COMMAND
                                  ; --- Display on , cursor on , cursor blink
 000026 e00e                      	ldi		r16 , DISP_ON
-000027 940e 00cf                 	call	LCD_COMMAND
+000027 940e 00d1                 	call	LCD_COMMAND
                                  ; --- Clear display
-000029 940e 00d7                 	call	LCD_ERASE
+000029 940e 00d9                 	call	LCD_ERASE
                                  ; --- Entry mode : Increment cursor , no shift
 00002b e006                      	ldi		r16 , E_MODE
-00002c 940e 00cf                 	call	LCD_COMMAND
+00002c 940e 00d1                 	call	LCD_COMMAND
 00002e 9508                      	ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1099,218 +1099,220 @@ AVRASM ver. 2.2.8  C:\Users\Vincent\Documents\GitHub\tsiu02\LAB4\AssemblerApplic
 00004d 3001                      	cpi		r16,1
 00004e f041                      	breq	SELECT
 00004f 3002                      	cpi		r16,2
-000050 f081                      	breq	LEFT
+000050 f091                      	breq	LEFT
 000051 3003                      	cpi		r16,3
-000052 f111                      	breq	DOWN
+000052 f121                      	breq	DOWN
 000053 3004                      	cpi		r16,4
-000054 f149                      	breq	UP
+000054 f159                      	breq	UP
 000055 3005                      	cpi		r16,5
-000056 f0a1                      	breq	RIGHT
+000056 f0b1                      	breq	RIGHT
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  SELECT:
 000057 3020                      	cpi		r18,0
-000058 f021                      	breq	ON
+000058 f029                      	breq	ON
                                  OFF:
 000059 e020                      	ldi		r18,0
-00005a 940e 00e9                 	call	BACKLIGHT_OFF
-00005c 9508                      	ret
+00005a 940e 00eb                 	call	BACKLIGHT_OFF
+00005c 940c 0095                 	jmp		RETURN
                                  ON:
-00005d e021                      	ldi		r18,1
-00005e 940e 00e6                 	call	BACKLIGHT_ON
-000060 9508                      	ret
+00005e e021                      	ldi		r18,1
+00005f 940e 00e8                 	call	BACKLIGHT_ON
+000061 940c 0095                 	jmp		RETURN
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  	
                                  LEFT:
-000061 9100 0111                 	lds		r16,CUR_POS
-000063 3000                      	cpi		r16,0
-000064 f1a9                      	breq	RETURN
-000065 950a                      	dec		r16
-000066 9300 0111                 	sts		CUR_POS,r16
-000068 e100                      	ldi		r16,$10
-000069 940c 0098                 	jmp		COMMAND_N_RETURN
+000063 9100 0111                 	lds		r16,CUR_POS
+000065 3000                      	cpi		r16,0
+000066 f171                      	breq	RETURN
+000067 950a                      	dec		r16
+000068 9300 0111                 	sts		CUR_POS,r16
+00006a e100                      	ldi		r16,$10
+00006b 940c 0093                 	jmp		COMMAND_N_RETURN
                                  
                                  RIGHT:
-00006b 9100 0111                 	lds		r16,CUR_POS
-00006d 300f                      	cpi		r16,15
-00006e f159                      	breq	RETURN
-00006f 9503                      	inc		r16
-000070 9300 0111                 	sts		CUR_POS,r16
-000072 e106                      	ldi		r16 , $16
-000073 940c 0098                 	jmp		COMMAND_N_RETURN
+00006d 9100 0111                 	lds		r16,CUR_POS
+00006f 300f                      	cpi		r16,15
+000070 f121                      	breq	RETURN
+000071 9503                      	inc		r16
+000072 9300 0111                 	sts		CUR_POS,r16
+000074 e106                      	ldi		r16 , $16
+000075 940c 0093                 	jmp		COMMAND_N_RETURN
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  DOWN:
-000075 940e 0087                 	call	INIT_X
-000077 3000                      	cpi		r16,0
-000078 f0a9                      	breq	TO_Z
-000079 350a                      	cpi		r16,90
-00007a f099                      	breq	TO_Z
-00007b 9503                      	inc		r16
-00007c 940c 0094                 	jmp		STORE_N_DISPLAY
+000077 940e 0096                 	call	INIT_X
+000079 3000                      	cpi		r16,0
+00007a f071                      	breq	TO_Z
+00007b 350a                      	cpi		r16,90
+00007c f061                      	breq	TO_Z
+00007d 9503                      	inc		r16
+00007e 940c 008f                 	jmp		STORE_N_DISPLAY
                                  
                                  UP:
-00007e 940e 0087                 	call	INIT_X
-000080 3000                      	cpi		r16,0
-000081 f079                      	breq	TO_A
-000082 3401                      	cpi		r16,65
-000083 f069                      	breq	TO_A
-000084 950a                      	dec		r16
-000085 940c 0094                 	jmp		STORE_N_DISPLAY
-                                 
-                                 ; Initierar X-pekare m.h.a. CUR_POS
-                                 INIT_X:
-000087 e0b1                      	ldi		XH,HIGH(LINE)
-000088 e0a0                      	ldi		XL,LOW(LINE)
-000089 9100 0111                 	lds		r16,CUR_POS
-00008b 0fa0                      	add		XL,r16
-00008c 910c                      	ld		r16,x	
-00008d 9508                      	ret
+000080 940e 0096                 	call	INIT_X
+000082 3000                      	cpi		r16,0
+000083 f041                      	breq	TO_A
+000084 3401                      	cpi		r16,65
+000085 f031                      	breq	TO_A
+000086 950a                      	dec		r16
+000087 940c 008f                 	jmp		STORE_N_DISPLAY
                                  
                                  TO_Z:
-00008e e401                      	ldi		r16,65
-00008f 940c 0094                 	jmp		STORE_N_DISPLAY
+000089 e401                      	ldi		r16,65
+00008a 940c 008f                 	jmp		STORE_N_DISPLAY
                                  
                                  TO_A:
-000091 e50a                      	ldi		r16,90
-000092 940c 0094                 	jmp		STORE_N_DISPLAY
+00008c e50a                      	ldi		r16,90
+00008d 940c 008f                 	jmp		STORE_N_DISPLAY
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  ; Lagrar r16 i SRAM, hoppar tillbaka vänster m.h.a. COMMAND
                                  ; Vill hellre att vi kan skippa vänster/höger hopp.
                                  STORE_N_DISPLAY:
-000094 930c                      	st		x,r16 
-000095 940e 00ca                 	call	LCD_ASCII
-000097 e100                      	ldi		r16,$10
+00008f 930c                      	st		x,r16 
+000090 940e 00cc                 	call	LCD_ASCII
+000092 e100                      	ldi		r16,$10
                                  COMMAND_N_RETURN:
-000098 940e 00cf                 	call	LCD_COMMAND
+000093 940e 00d1                 	call	LCD_COMMAND
                                  RETURN:
-00009a 9508                      	ret
+000095 9508                      	ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                 
+                                 ; Initierar X-pekare m.h.a. CUR_POS
+                                 INIT_X:
+000096 e0b1                      	ldi		XH,HIGH(LINE)
+000097 e0a0                      	ldi		XL,LOW(LINE)
+000098 9100 0111                 	lds		r16,CUR_POS
+00009a 0fa0                      	add		XL,r16
+00009b 910c                      	ld		r16,x	
+00009c 9508                      	ret
                                  	
+                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                 
                                  KEY_READ :
-00009b 940e 00a3                 	call	KEY
-00009d 2300                      	tst		r16
-00009e f7e1                      	brne	KEY_READ ; old key still pressed
+00009d 940e 00a5                 	call	KEY
+00009f 2300                      	tst		r16
+0000a0 f7e1                      	brne	KEY_READ ; old key still pressed
                                  KEY_WAIT_FOR_PRESS :
-00009f 940e 00a3                 	call	KEY
-0000a1 2300                      	tst		r16
-0000a2 f3e1                      	breq	KEY_WAIT_FOR_PRESS ; no key presse	ret;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0000a1 940e 00a5                 	call	KEY
+0000a3 2300                      	tst		r16
+0000a4 f3e1                      	breq	KEY_WAIT_FOR_PRESS ; no key presse	ret;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  KEY:
-0000a3 940e 003a                 	call	ADC_READ8
+0000a5 940e 003a                 	call	ADC_READ8
                                  
-0000a5 300d                      	cpi		r16,13 ;om r16 mindre än 13? 5
-0000a6 f090                      	brlo	KEY_5
+0000a7 300d                      	cpi		r16,13 ;om r16 mindre än 13? 5
+0000a8 f090                      	brlo	KEY_5
                                  
-0000a7 320b                      	cpi		r16,43 ;om r16 mindre än 43? 4
-0000a8 f070                      	brlo	KEY_4
+0000a9 320b                      	cpi		r16,43 ;om r16 mindre än 43? 4
+0000aa f070                      	brlo	KEY_4
                                  
-0000a9 3502                      	cpi		r16,82 ;om r16 mindre än 82? 3
-0000aa f050                      	brlo	KEY_3
+0000ab 3502                      	cpi		r16,82 ;om r16 mindre än 82? 3
+0000ac f050                      	brlo	KEY_3
                                  
-0000ab 3802                      	cpi		r16,130 ;om r16 mindre än 130? 2
-0000ac f030                      	brlo	KEY_2
+0000ad 3802                      	cpi		r16,130 ;om r16 mindre än 130? 2
+0000ae f030                      	brlo	KEY_2
                                  
-0000ad 3c0f                      	cpi		r16,207 ;om r16 mindre än 207? 1
-0000ae f010                      	brlo	KEY_1
+0000af 3c0f                      	cpi		r16,207 ;om r16 mindre än 207? 1
+0000b0 f010                      	brlo	KEY_1
                                  
                                  KEY_0:
-0000af e000                      	ldi		r16,0
-0000b0 9508                      	ret
-                                 KEY_1:
-0000b1 e001                      	ldi		r16,1
+0000b1 e000                      	ldi		r16,0
 0000b2 9508                      	ret
-                                 KEY_2:
-0000b3 e002                      	ldi		r16,2
+                                 KEY_1:
+0000b3 e001                      	ldi		r16,1
 0000b4 9508                      	ret
-                                 KEY_3:
-0000b5 e003                      	ldi		r16,3
+                                 KEY_2:
+0000b5 e002                      	ldi		r16,2
 0000b6 9508                      	ret
-                                 KEY_4:
-0000b7 e004                      	ldi		r16,4
+                                 KEY_3:
+0000b7 e003                      	ldi		r16,3
 0000b8 9508                      	ret
-                                 KEY_5:
-0000b9 e005                      	ldi		r16,5
+                                 KEY_4:
+0000b9 e004                      	ldi		r16,4
 0000ba 9508                      	ret
+                                 KEY_5:
+0000bb e005                      	ldi		r16,5
+0000bc 9508                      	ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  LCD_WRITE4:
-0000bb 9a29                      	sbi		PORTB, E
-0000bc b90b                      	out		PORTD, r16
-0000bd 0000                      	NOP
-0000be 0000                      	NOP
+0000bd 9a29                      	sbi		PORTB, E
+0000be b90b                      	out		PORTD, r16
 0000bf 0000                      	NOP
-0000c0 940e 00db                 	call	WAIT
-0000c2 9829                      	cbi		PORTB, E
-0000c3 9508                      	ret
+0000c0 0000                      	NOP
+0000c1 0000                      	NOP
+0000c2 940e 00dd                 	call	WAIT
+0000c4 9829                      	cbi		PORTB, E
+0000c5 9508                      	ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  LCD_WRITE8:
-0000c4 940e 00bb                 	call	LCD_WRITE4
-0000c6 9502                      	swap	r16
-0000c7 940e 00bb                 	call	LCD_WRITE4
-0000c9 9508                      	ret
+0000c6 940e 00bd                 	call	LCD_WRITE4
+0000c8 9502                      	swap	r16
+0000c9 940e 00bd                 	call	LCD_WRITE4
+0000cb 9508                      	ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  LCD_ASCII:
-0000ca 0000                      	NOP
-0000cb 9a28                      	sbi		PORTB, RS
-0000cc 940e 00c4                 	call	LCD_WRITE8
-0000ce 9508                      	ret
+0000cc 0000                      	NOP
+0000cd 9a28                      	sbi		PORTB, RS
+0000ce 940e 00c6                 	call	LCD_WRITE8
+0000d0 9508                      	ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  LCD_COMMAND:
-0000cf 9828                      	cbi		PORTB, RS
-0000d0 940e 00c4                 	call	LCD_WRITE8
-0000d2 9508                      	ret
+0000d1 9828                      	cbi		PORTB, RS
+0000d2 940e 00c6                 	call	LCD_WRITE8
+0000d4 9508                      	ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  ; Flyttar pekare till kolumn 0
                                  LCD_HOME:
-0000d3 e002                      	ldi		r16 , $02
-0000d4 940e 00cf                 	call	LCD_COMMAND
-0000d6 9508                      	ret
+0000d5 e002                      	ldi		r16 , $02
+0000d6 940e 00d1                 	call	LCD_COMMAND
+0000d8 9508                      	ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  ; Rensar fönster
                                  LCD_ERASE:
-0000d7 e001                      	ldi		r16 , LCD_CLR
-0000d8 940e 00cf                 	call	LCD_COMMAND
-0000da 9508                      	ret
+0000d9 e001                      	ldi		r16 , LCD_CLR
+0000da 940e 00d1                 	call	LCD_COMMAND
+0000dc 9508                      	ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  WAIT:
-0000db e045                      	ldi		r20, 5
-0000dc 940c 00e1                 	jmp		WAIT_LOOP
+0000dd e045                      	ldi		r20, 5
+0000de 940c 00e3                 	jmp		WAIT_LOOP
                                  
                                  WAIT_LONG:
-0000de 9601                          adiw    r24,1
-0000df f7f1                          brne    WAIT_LONG
-0000e0 9508                          ret
+0000e0 9601                          adiw    r24,1
+0000e1 f7f1                          brne    WAIT_LONG
+0000e2 9508                          ret
                                  WAIT_LOOP:
-0000e1 940e 00de                     call    WAIT_LONG
-0000e3 954a                          dec     r20
-0000e4 f7e1                          brne    WAIT_LOOP
-0000e5 9508                          ret
+0000e3 940e 00e0                     call    WAIT_LONG
+0000e5 954a                          dec     r20
+0000e6 f7e1                          brne    WAIT_LOOP
+0000e7 9508                          ret
                                  
                                  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                  
                                  BACKLIGHT_ON:
-0000e6 9a2a                      	sbi		PORTB, 2
-0000e7 9a22                      	sbi		DDRB, 2
-0000e8 9508                      	ret
+0000e8 9a2a                      	sbi		PORTB, 2
+0000e9 9a22                      	sbi		DDRB, 2
+0000ea 9508                      	ret
                                  
                                  BACKLIGHT_OFF:
-0000e9 982a                      	cbi		PORTB, 2
-0000ea 9508                      	ret
+0000eb 982a                      	cbi		PORTB, 2
+0000ec 9508                      	ret
                                  
 
 
@@ -1346,11 +1348,11 @@ brvs  :   0 bset  :   0 bst   :   0 call  :  33 cbi   :   3 cbr   :   0
 clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
 cpi   :  18 cpse  :   0 dec   :   3 eor   :   0 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   3 jmp   :   9 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   3 jmp   :  11 
 ld    :   1 ldd   :   0 ldi   :  32 lds   :   6 lpm   :   0 lsl   :   0 
 lsr   :   0 mov   :   0 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
 neg   :   0 nop   :   4 or    :   0 ori   :   1 out   :   3 pop   :   0 
-push  :   0 rcall :   0 ret   :  24 reti  :   0 rjmp  :   1 rol   :   0 
+push  :   0 rcall :   0 ret   :  22 reti  :   0 rjmp  :   1 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   4 sbic  :   0 sbis  :   0 
 sbiw  :   0 sbr   :   0 sbrc  :   1 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   0 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
@@ -1361,7 +1363,7 @@ Instructions used: 25 out of 113 (22.1%)
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0001d6    470      0    470   32768   1.4%
+[.cseg] 0x000000 0x0001da    474      0    474   32768   1.4%
 [.dseg] 0x000100 0x000112      0     18     18    2048   0.9%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 
